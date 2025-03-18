@@ -1,0 +1,28 @@
+@use "variables";
+
+@font-face {
+    font-family: "Junicode Italic";
+    src: url("/public/fonts/JunicodeVF-Italic.woff2") format("woff2");
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Junicode Light";
+    src: url("/public/fonts/JunicodeVF-Roman.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+}
+
+body {
+    color: variables.$color-text;
+    background-color: variables.$color-background;
+}
+
+a {
+    font-family: variables.$font-special-light;
+
+    &:hover {
+        font-family: variables.$font-special-italic;
+    }
+}

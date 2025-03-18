@@ -1,0 +1,33 @@
+---
+
+---
+
+<nav>
+  <ul>
+    <li><a href="/">Loic Leforestier</a></li>
+    <div class="nav-links">
+      <li><a href="/about">About</a></li>
+      <li><a href="/about#contact">Contact</a></li>
+    </div>
+  </ul>
+</nav>
+
+<style lang="scss">
+  @use "../styles/variables";
+
+  nav {
+    margin: variables.$spacing-l;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .nav-links {
+      display: flex;
+      flex-direction: row;
+      gap: 56px;
+    }
+  }
+</style>
