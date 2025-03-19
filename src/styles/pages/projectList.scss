@@ -1,0 +1,21 @@
+@use "../_variables";
+
+.projectsList {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-m;
+
+    li {
+        display: flex;
+        flex-direction: column;
+        gap: variables.$spacing-s;
+    }
+
+    .primaryLink {
+        font-size: variables.$font-size-l;
+    }
+
+    .secondaryLink {
+        font-size: variables.$font-size-m;
+    }
+}

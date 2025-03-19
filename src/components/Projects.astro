@@ -1,8 +1,93 @@
 ---
-import astroLogo from "../assets/astro.svg";
-import background from "../assets/background.svg";
+import projects from "../data/projects";
 ---
 
-<div>
-  <h1>Hello ceci est la page projects</h1>
+<div class="container">
+    <div class="projects">
+        <div class="projectsFilter">
+            <button id="filterDev">Dev</button>
+            <button id="filterFilms">Films</button>
+        </div>
+        <ul class="projectsList">
+            {
+                projects.map((project) => (
+                    <li class="projectItem" data-category={project.category}>
+                        <a class="primaryLink" href={project.link}>
+                            {project.title}
+                        </a>
+                        {project.secondaryLink && (
+                            <a
+                                class="secondaryLink"
+                                href={project.secondaryLink}
+                            >
+                                {project.secondaryLinkName}
+                            </a>
+                        )}
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
 </div>
+<style lang="scss">
+    @use "../styles/_variables";
+
+    .projects {
+        display: flex;
+        flex-direction: column;
+        gap: variables.$spacing-l;
+    }
+
+    .projectsList {
+        display: flex;
+        flex-direction: column;
+        gap: variables.$spacing-m;
+
+        li {
+            display: flex;
+            flex-direction: column;
+            gap: variables.$spacing-s;
+        }
+
+        .primaryLink {
+            font-size: variables.$font-size-l;
+        }
+
+        .secondaryLink {
+            font-size: variables.$font-size-m;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const filterDev = document.getElementById("filter-dev");
+        const filterMovie = document.getElementById("filter-movie");
+        const projectItems = document.querySelectorAll(".project-item");
+        if (!filterDev || !filterMovie || !projectItems) {
+            return;
+        }
+
+        filterDev.addEventListener("click", () => {
+            console.log("Filtre Dev cliqué");
+            projectItems.forEach((item: HTMLLinkElement) => {
+                if (item.dataset.category === "dev") {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+
+        filterMovie.addEventListener("click", () => {
+            console.log("Filtre Films cliqué");
+            projectItems.forEach((item: HTMLLinkElement) => {
+                if (item.dataset.category === "movie") {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    });
+</script>
