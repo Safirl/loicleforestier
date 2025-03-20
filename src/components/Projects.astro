@@ -11,7 +11,11 @@ import projects from "../data/projects";
         <ul class="projectsList">
             {
                 projects.map((project) => (
-                    <li class="projectItem" data-category={project.category}>
+                    <li
+                        class="projectItem"
+                        data-category={project.category}
+                        data-key={project.id}
+                    >
                         <a class="primaryLink" href={project.link}>
                             {project.title}
                         </a>
@@ -28,9 +32,18 @@ import projects from "../data/projects";
             }
         </ul>
     </div>
+    <div class="projectImage">
+        <img src="/images/project1.png" alt="" />
+    </div>
 </div>
 <style lang="scss">
     @use "../styles/_variables";
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
 
     .projects {
         display: flex;
@@ -61,17 +74,18 @@ import projects from "../data/projects";
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const filterDev = document.getElementById("filter-dev");
-        const filterMovie = document.getElementById("filter-movie");
-        const projectItems = document.querySelectorAll(".project-item");
+        const filterDev = document.getElementById("filterDev");
+        const filterMovie = document.getElementById("filterFilms");
+        const projectItems = document.querySelectorAll(".projectItem");
         if (!filterDev || !filterMovie || !projectItems) {
             return;
         }
 
         filterDev.addEventListener("click", () => {
             console.log("Filtre Dev cliqué");
-            projectItems.forEach((item: HTMLLinkElement) => {
-                if (item.dataset.category === "dev") {
+            projectItems.forEach((item: any) => {
+                console.log(item.dataset);
+                if (item.dataset.category === "web") {
                     item.style.display = "flex";
                 } else {
                     item.style.display = "none";
@@ -81,7 +95,7 @@ import projects from "../data/projects";
 
         filterMovie.addEventListener("click", () => {
             console.log("Filtre Films cliqué");
-            projectItems.forEach((item: HTMLLinkElement) => {
+            projectItems.forEach((item: any) => {
                 if (item.dataset.category === "movie") {
                     item.style.display = "flex";
                 } else {
