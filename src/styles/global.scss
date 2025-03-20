@@ -2,21 +2,28 @@
 
 @font-face {
     font-family: "Junicode Italic";
-    src: url("/public/fonts/JunicodeVF-Italic.woff2") format("woff2");
+    src: url("/fonts/JunicodeVF-Italic.woff2") format("woff2");
     font-weight: 300;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Junicode Light";
-    src: url("/public/fonts/JunicodeVF-Roman.woff2") format("woff2");
+    src: url("/fonts/JunicodeVF-Roman.woff2") format("woff2");
     font-weight: 300;
     font-style: normal;
 }
 
+html {
+    display: flex;
+    justify-content: center;
+}
+
 body {
+    margin: variables.$spacing-l;
     color: variables.$color-text;
     background-color: variables.$color-background;
+    max-width: 1440px;
 }
 
 a {
