@@ -24,5 +24,6 @@ a {
 
     &:hover {
         font-family: variables.$font-special-italic;
+        text-decoration: underline;
     }
 }
