@@ -4,7 +4,7 @@ import projects from "../data/projects";
 
 <div class="container">
     <div class="projects">
-        <div class="projectsFilter">
+        <div class="projectFilter">
             <button id="filterDev">Dev</button>
             <button id="filterFilms">Films</button>
         </div>
@@ -34,6 +34,9 @@ import projects from "../data/projects";
     </div>
     <div class="projectImage">
         <img src="/images/project1.png" alt="" />
+        <p class="projectDescription">
+            {projects[0].description}
+        </p>
     </div>
 </div>
 <style lang="scss">
@@ -41,14 +44,22 @@ import projects from "../data/projects";
 
     .container {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 180px;
         width: 100%;
+        margin: 0px 100px 0px 100px;
     }
 
     .projects {
         display: flex;
         flex-direction: column;
         gap: variables.$spacing-l;
+        width: 200px;
+    }
+
+    .projectFilter {
+        display: flex;
+            gap: variables.$spacing-s;
     }
 
     .projectsList {
@@ -56,52 +67,122 @@ import projects from "../data/projects";
         flex-direction: column;
         gap: variables.$spacing-m;
 
-        li {
+        .projectItem {
             display: flex;
             flex-direction: column;
             gap: variables.$spacing-s;
+            transition: ease-in-out opacity .2s;
+
+            &.hidden {
+                opacity: 50%;
+            }
+
+                .primaryLink {
+                    font-size: variables.$font-size-l;
+                }
+        
+                .secondaryLink {
+                    font-size: variables.$font-size-m;
+                    display: none;
+        
+                    &.visible {
+                        display: inherit;
+                    }
+                }
         }
 
-        .primaryLink {
-            font-size: variables.$font-size-l;
-        }
+    }
 
-        .secondaryLink {
-            font-size: variables.$font-size-m;
+    .projectImage {
+        display: flex;
+        flex-direction: column;
+        gap: variables.$spacing-m;
+
+        img {
+            width: 60vh;
+            max-width: 600px;
         }
     }
 </style>
 
 <script>
+import projects from "../data/projects";
+
+    interface project {
+        id: number;
+        title: string;
+        description: string;
+        image: string;
+        category: string;
+        link: string;
+        secondaryLink: string;
+        secondaryLinkName: string;
+    }
+
+    let isDevFilterActive = false;
+    let isMovieFilterActive = false;
+    let currentProject: project|undefined;
+
     document.addEventListener("DOMContentLoaded", () => {
         const filterDev = document.getElementById("filterDev");
         const filterMovie = document.getElementById("filterFilms");
-        const projectItems = document.querySelectorAll(".projectItem");
-        if (!filterDev || !filterMovie || !projectItems) {
+        const projectItems = document.querySelectorAll(".projectItem") as NodeListOf<HTMLLIElement>;
+        const projectDescription = document.querySelector(".projectDescription") as HTMLParagraphElement;
+        if (!filterDev || !filterMovie || !projectItems || !projectDescription) {
             return;
         }
 
-        filterDev.addEventListener("click", () => {
-            console.log("Filtre Dev cliqué");
-            projectItems.forEach((item: any) => {
-                console.log(item.dataset);
-                if (item.dataset.category === "web") {
-                    item.style.display = "flex";
-                } else {
-                    item.style.display = "none";
+        projectItems.forEach((item) => {
+            item.addEventListener("pointerenter", () => {
+                const oldItem = Array.from(projectItems).find((item) => item.dataset.key === currentProject?.id.toString())
+                if (oldItem) {
+                    const oldSecondaryLink = Array.from(oldItem.children).find((child) => 
+                        child.classList.contains("secondaryLink")
+                    );
+                    oldSecondaryLink?.classList.remove("visible")
                 }
-            });
+
+                currentProject = projects.find((project) => project.id.toString() === item.dataset.key)
+                if (!currentProject) {
+                    return;   
+                }
+                projectDescription.innerHTML = currentProject.description;
+                const secondaryLink = Array.from(item.children).find((child) => 
+                    child.classList.contains("secondaryLink")
+                );
+                if (secondaryLink) {
+                    secondaryLink.classList.add("visible")
+                    
+                }
+            })
+        })
+
+        //Filter for web projects
+        filterDev.addEventListener("click", () => {
+            isDevFilterActive = !isDevFilterActive
+            if (isDevFilterActive) {
+                isMovieFilterActive = !isDevFilterActive
+            }
+            updateActiveItems()
         });
 
+        //Filter for movie projects
         filterMovie.addEventListener("click", () => {
-            console.log("Filtre Films cliqué");
-            projectItems.forEach((item: any) => {
-                if (item.dataset.category === "movie") {
-                    item.style.display = "flex";
-                } else {
-                    item.style.display = "none";
+            isMovieFilterActive = !isMovieFilterActive
+            if (isMovieFilterActive) {
+                isDevFilterActive = !isMovieFilterActive
+            }
+            updateActiveItems()
+        });
+
+        function updateActiveItems() {
+            projectItems.forEach((item) => {
+                if (item.dataset.category === "web") {
+                    isMovieFilterActive ? item.classList.add("hidden") : item.classList.remove("hidden")
+                } else if (item.dataset.category === "movie") {
+                    isDevFilterActive ? item.classList.add("hidden") : item.classList.remove("hidden")
                 }
             });
-        });
+        }
     });
 </script>

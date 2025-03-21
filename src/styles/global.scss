@@ -24,13 +24,29 @@ body {
     color: variables.$color-text;
     background-color: variables.$color-background;
     max-width: 1440px;
+    overflow: hidden;
 }
 
 a {
     font-family: variables.$font-special-light;
+    font-size: variables.$font-size-s;
 
     &:hover {
         font-family: variables.$font-special-italic;
         text-decoration: underline;
     }
+}
+
+p {
+    font-size: variables.$font-size-s;
+    font-family: variables.$font-normal;
+    font-weight: 200;
+}
+
+button {
+    font-family: variables.$font-special-light;
+    font-size: variables.$font-size-s;
+    background: none;
+    color: variables.$color-text;
+    cursor: pointer;
 }
