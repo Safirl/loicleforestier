@@ -20,20 +20,22 @@ html {
 }
 
 body {
-    margin: variables.$spacing-l;
+    padding: variables.$spacing-l;
     color: variables.$color-text;
     background-color: variables.$color-background;
     max-width: 1440px;
     overflow: hidden;
+    transition: ease-in-out background-color .3s;
 }
 
 a {
     font-family: variables.$font-special-light;
     font-size: variables.$font-size-s;
+    user-select: none;
 
     &:hover {
         font-family: variables.$font-special-italic;
-        text-decoration: underline;
+        text-decoration: underline 1px;
     }
 }
 
@@ -49,4 +51,5 @@ button {
     background: none;
     color: variables.$color-text;
     cursor: pointer;
+    user-select: none;
 }
