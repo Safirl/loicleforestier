@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 <Layout title="Projects">
     <div class="leftColumn">
         <img src="/images/profile.png" alt="a picture of myself" class="profileImage">
-        <div class="contact">
+        <div id="contact" class="contact">
             <h2>Contact</h2>
             <ul class="contactInformations">
                 <li>Mail : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
@@ -23,9 +23,6 @@ import Layout from "../layouts/Layout.astro";
 <style lang="scss">
     @use "../styles/_variables";
 
-    main:global {
-        overflow: visible;
-    }
     .leftColumn {
         display: flex;
         flex-direction: column;
@@ -33,18 +30,18 @@ import Layout from "../layouts/Layout.astro";
         gap: variables.$spacing-xl;
 
         img {
-            width: 40vh;
+            width: 30vh;
         }
     }
 
     .rightColumn {
-        max-width: 400px;
+        max-width: 500px;
     }
 
-    .contact {
+    #contact {
         display: flex;
         flex-direction: column;
-        gap: variables.$spacing-l;;
+        gap: variables.$spacing-l;
     }
 
     .contactInformations {
