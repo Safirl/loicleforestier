@@ -143,7 +143,7 @@ import projects from "../data/projects";
         pointer-events: none;
         background-color: red;
         transform: translate(-50%, -50%);
-        transition: all .1s ease-out;
+        transition: all .05s ease-out;
         z-index: -1;
         filter: blur(50px);
         opacity: 50%;
@@ -154,7 +154,9 @@ import projects from "../data/projects";
     import projects from "../data/projects";
     import ColorThief from 'colorthief';
     import {followMouse} from '../js/mouseBlurEffect'
-    
+import type { log } from "console";
+import type { imageConfig } from "astro:assets";
+
     interface project {
         id: number;
         title: string;
@@ -202,7 +204,7 @@ import projects from "../data/projects";
                 if (!currentProject) {
                     return;   
                 }
-                img.src = (currentProject as project).image;
+                img.src = currentProject.image;
                 projectImages.forEach((img) => {
                     img.src = (currentProject as project).image;
                 })
@@ -261,18 +263,20 @@ import projects from "../data/projects";
                 }
             });
         }
-
+        if (!img) {
+            return;
+        }
         //Change background color with image dominent color
-        img.onload = () => {
+        img.addEventListener('load', () => {
             const colorThief = new ColorThief();
-            const dominantColor = colorThief.getColor(img); 
+            const dominantColor = colorThief.getColor(img);
             const darkenFactor = .1
             const rgbColor = `rgb(${dominantColor[0]*darkenFactor}, ${dominantColor[1]*darkenFactor}, ${dominantColor[2]*darkenFactor})`
             document.body.style.backgroundColor = rgbColor;
-        };
-        
+        });
         //MouseFollower
         followMouse(img);
     });
+    
 
 </script>
