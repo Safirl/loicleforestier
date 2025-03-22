@@ -20,11 +20,12 @@ html {
 }
 
 body {
-    padding: variables.$spacing-l;
     color: variables.$color-text;
+    padding: variables.$spacing-l;
     background-color: variables.$color-background;
     max-width: 1440px;
-    overflow: hidden;
+    overflow: scroll;
+    height: fit-content;
     transition: ease-in-out background-color .3s;
 }
 
@@ -52,4 +53,9 @@ button {
     color: variables.$color-text;
     cursor: pointer;
     user-select: none;
+}
+
+h2 {
+    font-size: variables.$font-size-l;
+    font-family: variables.$font-special-light;
 }

@@ -2,43 +2,41 @@
 import projects from "../data/projects";
 ---
 
-<div class="container">
-    <div class="projects">
-        <div class="projectFilter">
-            <button id="filterDev">Dev</button>
-            <button id="filterFilms">Films</button>
-        </div>
-        <ul class="projectsList">
-            {
-                projects.map((project) => (
-                    <li
-                        class="projectItem"
-                        data-category={project.category}
-                        data-key={project.id}
-                    >
-                        <a class="primaryLink" href={project.link}>
-                            {project.title}
+<div class="projects">
+    <div class="projectFilter">
+        <button id="filterDev">Dev</button>
+        <button id="filterFilms">Films</button>
+    </div>
+    <ul class="projectsList">
+        {
+            projects.map((project) => (
+                <li
+                    class="projectItem"
+                    data-category={project.category}
+                    data-key={project.id}
+                >
+                    <a class="primaryLink" href={project.link}>
+                        {project.title}
+                    </a>
+                    {project.secondaryLink && (
+                        <a
+                            class="secondaryLink"
+                            href={project.secondaryLink}
+                        >
+                            {project.secondaryLinkName}
                         </a>
-                        {project.secondaryLink && (
-                            <a
-                                class="secondaryLink"
-                                href={project.secondaryLink}
-                            >
-                                {project.secondaryLinkName}
-                            </a>
-                        )}
-                    </li>
-                ))
-            }
-        </ul>
-    </div>
-    <div class="projectImage">
-        <img id="image" class="projectImage" src={projects[0].image} alt="" />
-        <img class="backgroundImage" src={projects[0].image} alt="" />
-        <p class="projectDescription">
-            {projects[0].description}
-        </p>
-    </div>
+                    )}
+                </li>
+            ))
+        }
+    </ul>
+</div>
+<div class="projectImage">
+    <img id="image" class="projectImage" src={projects[0].image} alt="" />
+    <img class="backgroundImage" src={projects[0].image} alt="" />
+    <p class="projectDescription">
+        {projects[0].description}
+    </p>
 </div>
 <!-- Mouse follower -->
 <div id="mouseFollower"></div>
@@ -148,14 +146,15 @@ import projects from "../data/projects";
         filter: blur(50px);
         opacity: 50%;
     }
+    #trail {
+        position: absolute;
+    }
 </style>
 
 <script>
     import projects from "../data/projects";
     import ColorThief from 'colorthief';
     import {followMouse} from '../js/mouseBlurEffect'
-import type { log } from "console";
-import type { imageConfig } from "astro:assets";
 
     interface project {
         id: number;
