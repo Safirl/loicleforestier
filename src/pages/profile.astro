@@ -3,31 +3,41 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Projects">
-    <div class="leftColumn">
-        <img src="/images/profile.png" alt="a picture of myself" class="profileImage">
-        <div id="contact" class="contact">
-            <h2>Contact</h2>
-            <ul class="contactInformations">
-                <li>Mail : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
-                <li>Instagram : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
-                <li>linkedin : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
-                <li>mail : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
-            </ul>
+    <div class="container">
+        <div class="leftColumn">
+            <img src="/images/profile.png" alt="a picture of myself" class="profileImage">
+            <div id="contact" class="contact">
+                <h2>Contact</h2>
+                <ul class="contactInformations">
+                    <li>Mail : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
+                    <li>Instagram : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
+                    <li>linkedin : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
+                    <li>mail : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="rightColumn">
+            <p class="profileDescription">Lorem ipsum dolor sit amet consectetur. Diam et malesuada nulla in donec. Dui scelerisque erat sed sollicitudin amet neque a. Nulla at morbi purus eget eu vitae auctor molestie pharetra. Eget bibendum elementum odio feugiat facilisis diam imperdiet. Cursus in at hac tristique justo quam egestas risus. Eget tortor netus amet etiam bibendum eu aliquam. Nibh faucibus turpis sed arcu.</p>
         </div>
     </div>
-    <div class="rightColumn">
-        <p class="profileDescription">Lorem ipsum dolor sit amet consectetur. Diam et malesuada nulla in donec. Dui scelerisque erat sed sollicitudin amet neque a. Nulla at morbi purus eget eu vitae auctor molestie pharetra. Eget bibendum elementum odio feugiat facilisis diam imperdiet. Cursus in at hac tristique justo quam egestas risus. Eget tortor netus amet etiam bibendum eu aliquam. Nibh faucibus turpis sed arcu.</p>
-    </div>
+    <div class="footer"><span>Loïc Leforestier -&nbsp;</span><a href="/mentions">Mention légales</a></div>
 </Layout>
 
 <style lang="scss">
     @use "../styles/_variables";
 
+    .container {
+        display: flex;
+        justify-content: center;
+        gap: 10vw;
+        width: 100%;
+    }
+
     .leftColumn {
         display: flex;
         flex-direction: column;
         width: fit-content;
-        gap: variables.$spacing-xl;
+        gap: variables.$spacing-xxl;
 
         img {
             width: 30vh;
@@ -50,6 +60,20 @@ import Layout from "../layouts/Layout.astro";
         gap: variables.$spacing-s;
         // width: 500px;
         li {
+            font-size: variables.$font-size-s;
+            font-family: variables.$font-normal;
+            font-weight: 200;
+        }
+    }
+
+    .footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: variables.$spacing-xl;
+        opacity: 50%;
+
+        a {
             font-size: variables.$font-size-s;
             font-family: variables.$font-normal;
             font-weight: 200;
