@@ -9,7 +9,7 @@ import externalLinkArrow from "../assets/arrow.svg"
             <button id="filterDev">Dev</button>
             <button id="filterFilms">Films</button>
         </div>
-        <ul class="projectsList">
+        <ul class="projectList">
             {
                 projects.map((project) => (
                     <li
@@ -90,7 +90,7 @@ import externalLinkArrow from "../assets/arrow.svg"
         transition: ease-in-out opacity .2s;
     }
 
-    .projectsList {
+    .projectList {
         display: flex;
         flex-direction: column;
         gap: variables.$spacing-l;
@@ -99,7 +99,7 @@ import externalLinkArrow from "../assets/arrow.svg"
         // overflow-x: visible;
         scrollbar-width: none;
         scroll-behavior: smooth;
-        width: 250px;
+        width: 230px;
 
         .centerOffset {
             padding-bottom: 42vh;
@@ -120,7 +120,7 @@ import externalLinkArrow from "../assets/arrow.svg"
             cursor: none;
         }
 
-        &:hover {
+        &.currentItem {
             .primaryLink[data-has-secondary-link="true"] {
                 margin-bottom: .5rem
             }
@@ -194,7 +194,6 @@ import externalLinkArrow from "../assets/arrow.svg"
         width: 100px;
         height: 100px;
         pointer-events: none;
-        background-color: red;
         transform: translate(-50%, -50%);
         // transition: all .05s ease-out;
         z-index: -1;
@@ -204,6 +203,15 @@ import externalLinkArrow from "../assets/arrow.svg"
 
     #trail {
         position: absolute;
+    }
+
+    @media (pointer: coarse) {
+        .projectList {
+            scroll-snap-type: y mandatory;
+        }
+        .projectItem {
+            scroll-snap-align: start;
+        }
     }
 </style>
 
@@ -239,19 +247,28 @@ import externalLinkArrow from "../assets/arrow.svg"
     function addUpdateProjectImageEvent() {
         projectItems.forEach((item) => {
             item.addEventListener("pointerenter", () => {
-                currentProject = projects.find((project) => project.id.toString() === item.dataset.key)
-                if (!currentProject) {
-                    return;   
-                }
-                img.src = currentProject.image;
-                const projectImages = document.querySelectorAll(".dynamicImage") as NodeListOf<HTMLImageElement>;
-                projectImages.forEach((img) => {
-                    (img as HTMLImageElement).src = (currentProject as project).image;
-                })
-                const projectDescription = document.querySelector(".projectDescription") as HTMLParagraphElement;
-                projectDescription.innerHTML = currentProject.description;
+                setCurrentProject(item);
             })
         })
+    }
+
+    function setCurrentProject(newItem: HTMLLIElement) {
+        currentProject = projects.find((project) => project.id.toString() === newItem.dataset.key)
+        if (!currentProject) {
+            return;   
+        }
+        img.src = currentProject.image;
+        const projectImages = document.querySelectorAll(".dynamicImage") as NodeListOf<HTMLImageElement>;
+        projectImages.forEach((img) => {
+            (img as HTMLImageElement).src = (currentProject as project).image;
+        })
+        const projectDescription = document.querySelector(".projectDescription") as HTMLParagraphElement;
+        projectDescription.innerHTML = currentProject.description;
+
+        projectItems.forEach(item => {
+            item.classList.remove("currentItem");
+        });
+        newItem.classList.add("currentItem");
     }
 
     function addFilterEvents() {
@@ -299,7 +316,39 @@ import externalLinkArrow from "../assets/arrow.svg"
             }
         });
     }
-    // const projectsContainer = document.querySelector('.projectsList');
+
+    const projectList = document.querySelector(".projectList") as HTMLUListElement;
+    function getTopItemElement() {
+        let topMostItem;
+        let minTopDiff = Infinity;
+        
+        projectItems.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            const listRect = projectList.getBoundingClientRect();
+            
+            const topDiff = rect.top - listRect.top;
+            
+            if (topDiff >= 0 && topDiff < minTopDiff) {
+                minTopDiff = topDiff;
+                topMostItem = item;
+            }
+        });
+        return topMostItem;
+    }
+    
+    let scrollTimeout: number;
+    projectList?.addEventListener("scroll", () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = window.setTimeout(() => {
+            let topElement = getTopItemElement() as HTMLLIElement;
+            if (!topElement) {
+                return;
+            }
+            setCurrentProject(topElement);
+        }, 200)
+
+    });
+    // const projectsContainer = document.querySelector('.projectList');
     // if (projectsContainer) {
     //     //Scroll on the whole page
     //     document.addEventListener("wheel", (event) => {
