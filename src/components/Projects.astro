@@ -29,6 +29,7 @@ import externalLinkArrow from "../assets/arrow.svg"
                                 rel="noopener noreferrer"
                             >
                                 {project.secondaryLinkName}
+                                <Image class="externalArrow" src={externalLinkArrow} alt="external link icon" />
                             </a>
                         )}
                     </li>
@@ -84,19 +85,21 @@ import externalLinkArrow from "../assets/arrow.svg"
     }
 
     .externalArrow {
-        width: 30px;
         padding-left: variables.$spacing-s;
+        opacity: 0%;
+        transition: ease-in-out opacity .2s;
     }
 
     .projectsList {
         display: flex;
         flex-direction: column;
-        gap: variables.$spacing-m;
+        gap: variables.$spacing-l;
         max-height: calc(100vh - variables.$spacing-l*2 - 10vh - 35px);
         overflow-y: auto;
         // overflow-x: visible;
         scrollbar-width: none;
         scroll-behavior: smooth;
+        width: 250px;
 
         .centerOffset {
             padding-bottom: 42vh;
@@ -123,35 +126,46 @@ import externalLinkArrow from "../assets/arrow.svg"
             }
 
             .secondaryLink {
-                margin-top: 0%;
+                margin-top: 0;
                 opacity: 100%;
+                visibility:initial;
+            }
+        }
+
+        a {
+            display: flex;
+            align-items: center;
+
+            &:hover {
+                .externalArrow {
+                    opacity: 100%;
+                }
             }
         }
     }
 
     .primaryLink {
-        display: flex;
         font-size: variables.$font-size-l;
         width: fit-content;
         transition: margin-bottom ease-in-out .5s;
         margin-bottom: 0px;
 
-        // &.visible {
-        //     margin-bottom: .5rem
-        // }
+        .externalArrow {
+            width: 30px;
+        }
     }
 
     .secondaryLink {
         font-size: variables.$font-size-s;
         opacity: 0%;
-        transition: opacity 0.5s ease-in-out, margin-top 0.5s ease-in-out;
         width: fit-content;
-        margin-top: -20px;
+        margin-top: -34px;
+        visibility: hidden;
+        transition: opacity 0.5s ease-in-out 0.3s, margin-top 0.5s ease-in-out, visibility 0s linear 0.3s ;
 
-        // &.visible {
-        //     margin-top: 0%;
-        //     opacity: 100%;
-        // }
+        .externalArrow {
+            width: 15px;
+        }
     }
 
     .projectImage {
