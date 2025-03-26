@@ -205,7 +205,9 @@ import externalLinkArrow from "../assets/arrow.svg"
         position: absolute;
     }
 
-    @media (pointer: coarse) {
+    //For touchscreen in landscape
+
+    @media (pointer: coarse) and (orientation: landscape) {
         .projectList {
             scroll-snap-type: y mandatory;
         }
@@ -317,6 +319,20 @@ import externalLinkArrow from "../assets/arrow.svg"
         });
     }
 
+    //Change background color with image dominent color
+    img.addEventListener('load', () => {
+        const colorThief = new ColorThief();
+        const dominantColor = colorThief.getColor(img);
+        const darkenFactor = .1
+        const rgbColor = `rgb(${dominantColor[0]*darkenFactor}, ${dominantColor[1]*darkenFactor}, ${dominantColor[2]*darkenFactor})`
+        document.body.style.backgroundColor = rgbColor;
+    });
+
+    //MouseFollower
+    followMouse(img);
+
+    
+    //Get the top project element
     const projectList = document.querySelector(".projectList") as HTMLUListElement;
     function getTopItemElement() {
         let topMostItem;
@@ -335,19 +351,38 @@ import externalLinkArrow from "../assets/arrow.svg"
         });
         return topMostItem;
     }
-    
+
+    //Only on touchscreen medias in landscape mode
+    const touchScreenMediaQuery = window.matchMedia("(pointer: coarse)");
+    const sizeMediaQuery = window.matchMedia("(orientation: landscape)");
     let scrollTimeout: number;
-    projectList?.addEventListener("scroll", () => {
+
+    function handlePointerChange() {
+        if (touchScreenMediaQuery.matches && sizeMediaQuery.matches) {
+            projectList?.addEventListener("scroll", changeCurrentProjectOnScroll);
+        }
+        else {
+            projectList?.removeEventListener("scroll", changeCurrentProjectOnScroll);
+        }
+    }
+
+    function changeCurrentProjectOnScroll() {
         clearTimeout(scrollTimeout);
         scrollTimeout = window.setTimeout(() => {
-            let topElement = getTopItemElement() as HTMLLIElement;
+            let topElement = getTopItemElement();
             if (!topElement) {
                 return;
             }
-            setCurrentProject(topElement);
-        }, 200)
+            setCurrentProject(topElement as HTMLLIElement);
+        }, 100)
+    }
 
-    });
+    touchScreenMediaQuery.addEventListener("change", handlePointerChange);
+    sizeMediaQuery.addEventListener("change", handlePointerChange);
+
+    //Set default behavior
+    handlePointerChange();
+    
     // const projectsContainer = document.querySelector('.projectList');
     // if (projectsContainer) {
     //     //Scroll on the whole page
@@ -355,18 +390,5 @@ import externalLinkArrow from "../assets/arrow.svg"
     //         projectsContainer.scrollTop += event.deltaY;
     //     });
     // }
-
-    //Change background color with image dominent color
-    img.addEventListener('load', () => {
-        const colorThief = new ColorThief();
-        const dominantColor = colorThief.getColor(img);
-        const darkenFactor = .1
-        const rgbColor = `rgb(${dominantColor[0]*darkenFactor}, ${dominantColor[1]*darkenFactor}, ${dominantColor[2]*darkenFactor})`
-        document.body.style.backgroundColor = rgbColor;
-    });
-
-    //MouseFollower
-    followMouse(img);
-    
 
 </script>
