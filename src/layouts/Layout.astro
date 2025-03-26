@@ -30,8 +30,15 @@ const { title, children } = Astro.props;
 </html>
 
 <style lang="scss">
-  @use "../styles/variables";
+  @use "../styles/_variables";
   main {
     margin-top: 10vh;
   }
+
+  @media (orientation: portrait) {
+    main {
+      margin-top: variables.$spacing-m;
+    }
+  }
+
 </style>

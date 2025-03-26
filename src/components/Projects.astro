@@ -67,13 +67,13 @@ import externalLinkArrow from "../assets/arrow.svg"
     .projects {
         display: flex;
         flex-direction: column;
-        gap: variables.$spacing-l;
+        gap: variables.$spacing-m;
         width: 330px;
     }
 
     .projectFilter {
         display: flex;
-        gap: variables.$spacing-s;
+        gap: variables.$spacing-xs;
 
         button {
             transition: ease-in-out opacity .2s;
@@ -85,7 +85,7 @@ import externalLinkArrow from "../assets/arrow.svg"
     }
 
     .externalArrow {
-        padding-left: variables.$spacing-s;
+        padding-left: variables.$spacing-xs;
         opacity: 0%;
         transition: ease-in-out opacity .2s;
     }
@@ -93,8 +93,8 @@ import externalLinkArrow from "../assets/arrow.svg"
     .projectList {
         display: flex;
         flex-direction: column;
-        gap: variables.$spacing-l;
-        max-height: calc(100vh - variables.$spacing-l*2 - 10vh - 35px);
+        gap: variables.$spacing-m;
+        max-height: calc(100vh - variables.$spacing-m*2 - 10vh - 35px);
         overflow-y: auto;
         // overflow-x: visible;
         scrollbar-width: none;
@@ -171,7 +171,7 @@ import externalLinkArrow from "../assets/arrow.svg"
     .projectImage {
         display: flex;
         flex-direction: column;
-        gap: variables.$spacing-m;
+        gap: variables.$spacing-s;
         position: relative;
         width: 60vh;
         max-width: 600px;
@@ -206,13 +206,83 @@ import externalLinkArrow from "../assets/arrow.svg"
     }
 
     //For touchscreen in landscape
-
     @media (pointer: coarse) and (orientation: landscape) {
         .projectList {
             scroll-snap-type: y mandatory;
         }
         .projectItem {
             scroll-snap-align: start;
+        }
+    }
+
+    //For touchscreen in portrait mode
+    @media (orientation: portrait) {
+        .container {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: variables.$spacing-m;
+            align-items: center;
+        }
+
+        .projects {
+            display: flex;
+            flex-direction: row;
+            gap:0;
+            width: 100%;
+            overflow-x: scroll;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+
+        .projectList {
+            flex-direction: row;
+            gap: variables.$spacing-m;
+            max-height: 100%;
+            overflow-y: initial;
+            width: 100%;
+            padding-left: 50vw;
+            text-wrap: nowrap;
+            scroll-snap-type: x mandatory;
+
+            .centerOffset {
+                display: none;
+            }
+        }
+
+        .projectItem {
+            scroll-snap-align: start;
+        }
+
+        .projectImage {
+            gap: variables.$spacing-xs;
+            position: relative;
+            max-width: 100%;
+            height: 60svh;
+
+            .backgroundImage {
+                position: absolute;
+                z-index: -1;
+                top: 50%;
+                left: 50%;
+                width: 100%;
+                height: 80svh;
+                transform: translate(-50%, -50%);
+                object-fit: fill;
+                filter: blur(120px);
+            }
+        }
+
+        .projectFilter {
+            display: none;
+        }
+
+         //Mouse trail
+        #mouseFollower {
+            display: none;
+        }
+
+        #trail {
+            display: none;
         }
     }
 </style>
