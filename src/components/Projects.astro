@@ -39,7 +39,7 @@ import externalLinkArrow from "../assets/arrow.svg"
         </ul>
     </div>
     <div class="projectImage">
-        <img id="image" class="projectImage dynamicImage" src={projects[0].image} alt="" />
+        <img id="image" class="dynamicImage" src={projects[0].image} alt="" />
         <img class="backgroundImage dynamicImage" src={projects[0].image} alt="" />
         <p class="projectDescription">
             {projects[0].description}
@@ -52,10 +52,6 @@ import externalLinkArrow from "../assets/arrow.svg"
 
 <style lang="scss">
     @use "../styles/_variables";
-
-    body {
-        overflow: hidden;
-    }
 
     .container {
         display: flex;
@@ -183,6 +179,7 @@ import externalLinkArrow from "../assets/arrow.svg"
             top: 50%;
             left: 50%;
             width: 150%;
+            object-fit: cover;
             transform: translate(-50%, -50%);
             filter: blur(120px);
         }
@@ -222,6 +219,8 @@ import externalLinkArrow from "../assets/arrow.svg"
             flex-direction: column-reverse;
             gap: variables.$spacing-m;
             align-items: center;
+            height: 100%;
+            justify-content: space-between;
         }
 
         .projects {
@@ -232,6 +231,8 @@ import externalLinkArrow from "../assets/arrow.svg"
             overflow-x: scroll;
             scroll-behavior: smooth;
             scrollbar-width: none;
+            height: 75px;
+            scroll-snap-type: y mandatory;
         }
 
         .projectList {
@@ -242,22 +243,18 @@ import externalLinkArrow from "../assets/arrow.svg"
             width: 100%;
             padding-left: 50vw;
             text-wrap: nowrap;
-            scroll-snap-type: x mandatory;
+            touch-action: pan-x;
 
             .centerOffset {
                 display: none;
             }
         }
 
-        .projectItem {
-            scroll-snap-align: start;
-        }
-
         .projectImage {
             gap: variables.$spacing-xs;
             position: relative;
             max-width: 100%;
-            height: 60svh;
+            height: fit-content;
 
             .backgroundImage {
                 position: absolute;

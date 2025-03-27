@@ -32,12 +32,15 @@ const { title, children } = Astro.props;
 <style lang="scss">
   @use "../styles/_variables";
   main {
-    margin-top: 10vh;
+    padding-top: 10vh;
   }
 
   @media (orientation: portrait) {
     main {
-      margin-top: variables.$spacing-m;
+      padding-top: variables.$spacing-m;
+      // height: calc(100vh - #{variables.$spacing-m * 2}); //remove 
+      height: 100%;
+      box-sizing: border-box;
     }
   }
 

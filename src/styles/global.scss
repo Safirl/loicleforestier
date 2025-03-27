@@ -25,8 +25,9 @@ body {
     padding: variables.$spacing-m;
     background-color: variables.$color-background;
     max-width: 1440px;
-    overflow: scroll;
-    height: fit-content;
+    height: 100svh;
+    overflow: hidden;
+    box-sizing: border-box;
     transition: ease-in-out background-color .3s;
 }
 
@@ -67,8 +68,8 @@ h2 {
     body {
         padding: variables.$spacing-s;
         max-width: 768px;
-        overflow-y: hidden;
-        height: 100%;
+        overflow: auto;
+        height: 100svh;
     }
 
     a {
