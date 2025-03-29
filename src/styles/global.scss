@@ -74,6 +74,10 @@ h2 {
 
     a {
         font-size: variables.$mobile-font-size-s;
+        &:hover {
+            font-family: variables.$font-special-light;
+            text-decoration: none;
+        }
     }
 
     p,
