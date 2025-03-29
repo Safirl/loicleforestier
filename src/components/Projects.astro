@@ -232,22 +232,28 @@ import externalLinkArrow from "../assets/arrow.svg"
             scroll-behavior: smooth;
             scrollbar-width: none;
             height: 75px;
-            scroll-snap-type: y mandatory;
+            box-sizing: border-box;
         }
 
         .projectList {
             flex-direction: row;
             gap: variables.$spacing-m;
             max-height: 100%;
-            overflow-y: initial;
+            overflow-y: scroll;
             width: 100%;
             padding-left: 50vw;
             text-wrap: nowrap;
             touch-action: pan-x;
+            scroll-snap-type: x mandatory;
 
             .centerOffset {
                 display: none;
             }
+        }
+
+        .projectItem {
+            scroll-snap-align: end  center;
+            width: fit-content;
         }
 
         .projectImage {
