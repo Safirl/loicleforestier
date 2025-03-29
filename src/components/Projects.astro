@@ -91,7 +91,6 @@ import externalLinkArrow from "../assets/arrow.svg"
         gap: variables.$spacing-m;
         max-height: calc(100vh - variables.$spacing-m*2 - 10vh - 35px);
         overflow-y: auto;
-        // overflow-x: visible;
         scrollbar-width: none;
         scroll-behavior: smooth;
         width: 230px;
@@ -104,7 +103,6 @@ import externalLinkArrow from "../assets/arrow.svg"
         flex-direction: column;
         transition: ease-in-out opacity .2s;
         position: relative;
-        // white-space: nowrap;
 
         &.hidden {
             opacity: 50%;
@@ -350,6 +348,7 @@ import externalLinkArrow from "../assets/arrow.svg"
     
     addUpdateProjectImageEvent()
     addFilterEvents()
+    setCurrentProject(projectItems[0])
     
     function addUpdateProjectImageEvent() {
         projectItems.forEach((item) => {
@@ -443,22 +442,32 @@ import externalLinkArrow from "../assets/arrow.svg"
     
     //Get the top project element
     const projectList = document.querySelector(".projectList") as HTMLUListElement;
-    function getTopItemElement() {
-        let topMostItem;
+    function getClosestItemElement(isVertical: boolean) {
+        let closestItem;
         let minTopDiff = Infinity;
         
         projectItems.forEach(item => {
             const rect = item.getBoundingClientRect();
-            const listRect = projectList.getBoundingClientRect();
             
-            const topDiff = rect.top - listRect.top;
-            
-            if (topDiff >= 0 && topDiff < minTopDiff) {
-                minTopDiff = topDiff;
-                topMostItem = item;
+            let diff;
+            if (isVertical) {
+                const listRect = projectList.getBoundingClientRect();
+                diff = rect.top - listRect.top;
+            }
+            else {
+                const centerScreen = window.innerWidth / 2;
+                const centerItem = rect.left + rect.width / 2;
+                diff = Math.abs(centerItem - centerScreen);
+            }
+                        
+            if (diff >= 0 && diff < minTopDiff) {
+                minTopDiff = diff;
+                closestItem = item;
             }
         });
-        return topMostItem;
+
+        console.log(closestItem)
+        return closestItem;
     }
 
     //Only on touchscreen medias in landscape mode
@@ -472,22 +481,23 @@ import externalLinkArrow from "../assets/arrow.svg"
 
         if (touchScreenMediaQuery.matches /*&& sizeMediaQuery.matches*/) {
             projectList?.addEventListener("scroll", changeCurrentProjectOnScroll);
+            projectList?.addEventListener("touchmove", changeCurrentProjectOnScroll, { passive: true });
         }
         else {
             projectList?.removeEventListener("scroll", changeCurrentProjectOnScroll);
+            projectList?.removeEventListener("touchmove", changeCurrentProjectOnScroll);
         }
     }
 
     function changeCurrentProjectOnScroll() {
-        console.log("refresh scroll")
         clearTimeout(scrollTimeout);
         scrollTimeout = window.setTimeout(() => {
-            let topElement = getTopItemElement();
+            let topElement = getClosestItemElement(sizeMediaQuery.matches ? true : false) ;
             if (!topElement) {
                 return;
             }
             setCurrentProject(topElement as HTMLLIElement);
-        }, 100)
+        }, 200)
     }
 
     touchScreenMediaQuery.addEventListener("change", handlePointerChange);
