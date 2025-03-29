@@ -17,9 +17,9 @@ import externalLinkArrow from "../assets/arrow.svg"
                         data-category={project.category}
                         data-key={project.id}
                     >
-                        <a class="primaryLink" target="_blank" rel="noopener noreferrer" href={project.link} data-has-secondary-link={project.secondaryLink == "" ? "false" : "true"}>
+                        <a class="primaryLink" target={project.id == 0 ? "" : "_blank"} rel={project.id == 0 ? "" : "noopener noreferrer"} href={project.link} data-has-secondary-link={project.secondaryLink == "" ? "false" : "true"}>
                             {project.title}
-                            <Image class="externalArrow" src={externalLinkArrow} alt="external link icon" />
+                            {<Image class="externalArrow" src={externalLinkArrow} alt="external link icon" />}
                         </a>
                         {project.secondaryLink != "" && (
                             <a
@@ -29,17 +29,16 @@ import externalLinkArrow from "../assets/arrow.svg"
                                 rel="noopener noreferrer"
                             >
                                 {project.secondaryLinkName}
-                                <Image class="externalArrow" src={externalLinkArrow} alt="external link icon" />
+                                {<Image class="externalArrow" src={externalLinkArrow} alt="external link icon" />}
                             </a>
                         )}
                     </li>
                 ))
             }
-            <div class="centerOffset"></div>
         </ul>
     </div>
     <div class="projectImage">
-        <img id="image" class="dynamicImage" src={projects[0].image} alt="" />
+        <img id="image" class="foregroundImage dynamicImage" src={projects[0].image} alt="" />
         <img class="backgroundImage dynamicImage" src={projects[0].image} alt="" />
         <p class="projectDescription">
             {projects[0].description}
@@ -96,11 +95,8 @@ import externalLinkArrow from "../assets/arrow.svg"
         scrollbar-width: none;
         scroll-behavior: smooth;
         width: 230px;
-
-        .centerOffset {
-            padding-bottom: 42vh;
-        }
-
+        box-sizing: border-box;
+        padding-bottom: 42vh;
     }
 
     .projectItem {
@@ -171,7 +167,6 @@ import externalLinkArrow from "../assets/arrow.svg"
         position: relative;
         width: 60vh;
         max-width: 600px;
-        object-fit: cover;
 
         .backgroundImage {
             position: absolute;
@@ -182,6 +177,14 @@ import externalLinkArrow from "../assets/arrow.svg"
             object-fit: cover;
             transform: translate(-50%, -50%);
             filter: blur(120px);
+        }
+
+        .foregroundImage  {
+            object-fit: cover;
+            max-width: 600px;
+            max-height: 600px;
+            height: 60vh;
+            width: 60vh;
         }
     }
 
@@ -202,6 +205,24 @@ import externalLinkArrow from "../assets/arrow.svg"
         position: absolute;
     }
 
+    @media (pointer: coarse) {
+        a {
+            &:hover {
+                .externalArrow {
+                    opacity: 0;
+                }
+            }
+        }
+
+        .externalArrow {
+            opacity: 0;
+
+            &.currentItem {
+                opacity: 100%;
+            }
+        }
+    }
+
     //For touchscreen in landscape
     @media (pointer: coarse) and (orientation: landscape) {
         .projectList {
@@ -220,6 +241,7 @@ import externalLinkArrow from "../assets/arrow.svg"
             gap: variables.$spacing-m;
             align-items: center;
             height: 100%;
+            box-sizing: border-box;
             justify-content: space-between;
         }
 
@@ -228,33 +250,45 @@ import externalLinkArrow from "../assets/arrow.svg"
             flex-direction: row;
             gap:0;
             width: 100%;
-            overflow-x: scroll;
+            overflow: auto;
             scroll-behavior: smooth;
             scrollbar-width: none;
             height: 75px;
             box-sizing: border-box;
+            scroll-snap-type: x mandatory;
+            touch-action: pan-x;
         }
 
         .projectList {
             flex-direction: row;
-            gap: variables.$spacing-m;
+            gap: variables.$spacing-l;
+            padding-bottom: 0;
             max-height: 100%;
-            overflow-y: scroll;
-            width: 100%;
+            overflow: initial;
+            width: fit-content;
             padding-left: 50vw;
             text-wrap: nowrap;
             touch-action: pan-x;
-            scroll-snap-type: x mandatory;
-
-            .centerOffset {
-                display: none;
-            }
         }
 
         .projectItem {
             scroll-snap-align: end  center;
             width: fit-content;
+            
+            .secondaryLink {
+                display: none;
+            }
+
+            .externalArrow {
+                display: initial;
+                position: absolute;
+                padding-left: 0;
+                top: 0;
+                right: -36px;
+                width: 18px;
+            }
         }
+
 
         .projectImage {
             gap: variables.$spacing-xs;
@@ -322,6 +356,8 @@ import externalLinkArrow from "../assets/arrow.svg"
     function addUpdateProjectImageEvent() {
         projectItems.forEach((item) => {
             item.addEventListener("pointerenter", () => {
+                //We don't want to change current project on hover if the pointer is coarse
+                if (touchScreenMediaQuery.matches) return;
                 setCurrentProject(item);
             })
         })
@@ -342,8 +378,10 @@ import externalLinkArrow from "../assets/arrow.svg"
 
         projectItems.forEach(item => {
             item.classList.remove("currentItem");
+            item.querySelector(".externalArrow")?.classList.remove("currentItem")
         });
         newItem.classList.add("currentItem");
+        newItem.querySelector(".externalArrow")?.classList.add("currentItem");
     }
 
     function addFilterEvents() {
@@ -431,7 +469,10 @@ import externalLinkArrow from "../assets/arrow.svg"
     let scrollTimeout: number;
 
     function handlePointerChange() {
-        if (touchScreenMediaQuery.matches && sizeMediaQuery.matches) {
+        //Refresh UpdateProject on hover
+        addUpdateProjectImageEvent();
+
+        if (touchScreenMediaQuery.matches /*&& sizeMediaQuery.matches*/) {
             projectList?.addEventListener("scroll", changeCurrentProjectOnScroll);
         }
         else {
@@ -440,6 +481,7 @@ import externalLinkArrow from "../assets/arrow.svg"
     }
 
     function changeCurrentProjectOnScroll() {
+        console.log("refresh scroll")
         clearTimeout(scrollTimeout);
         scrollTimeout = window.setTimeout(() => {
             let topElement = getTopItemElement();
