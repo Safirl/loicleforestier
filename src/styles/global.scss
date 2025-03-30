@@ -5,6 +5,7 @@
     src: url("/fonts/JunicodeVF-Italic.woff2") format("woff2");
     font-weight: 300;
     font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
@@ -12,6 +13,7 @@
     src: url("/fonts/JunicodeVF-Roman.woff2") format("woff2");
     font-weight: 300;
     font-style: normal;
+    font-display: swap;
 }
 
 html {
@@ -32,12 +34,12 @@ body {
 }
 
 a {
-    font-family: variables.$font-special-light;
+    font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
     font-size: variables.$font-size-s;
     user-select: none;
 
     &:hover {
-        font-family: variables.$font-special-italic;
+        font-family: variables.$font-special-italic, Arial, Helvetica, sans-serif;
         text-decoration: underline 1px;
     }
 }
@@ -45,12 +47,12 @@ a {
 p,
 span {
     font-size: variables.$font-size-s;
-    font-family: variables.$font-normal;
+    font-family: variables.$font-normal, Arial, Helvetica, sans-serif;
     font-weight: 200;
 }
 
 button {
-    font-family: variables.$font-special-light;
+    font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
     font-size: variables.$font-size-s;
     background: none;
     color: variables.$color-text;
@@ -60,7 +62,7 @@ button {
 
 h1, h2 {
     font-size: variables.$font-size-l;
-    font-family: variables.$font-special-light;
+    font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
 }
 
 //Only for portrait touchscreens
@@ -75,7 +77,7 @@ h1, h2 {
     a {
         font-size: variables.$mobile-font-size-s;
         &:hover {
-            font-family: variables.$font-special-light;
+            font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
             text-decoration: none;
         }
     }

@@ -11,13 +11,24 @@ const { title, children } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <!-- <meta name="generator" content={Astro.generator} /> -->
+    <meta name="description" content="Loïc Leforestier portfolio. Have a look at my creations." />
+    <meta property="og:title" content="Portfolio - Loïc Leforestier" />
+    <meta property="og:description" content="Loïc Leforestier portfolio. Have a look at my creations." />
+    <meta property="og:image" content="/images/gallery.webp" />
+    <meta property="og:url" content="https://loicleforestier.com" />
+    <meta property="og:type" content="website" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/png" href="/favicon.webp" />
     <title>{title} - Loïc Leforestier</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
       href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      as="style"
+    />
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" 
       rel="stylesheet"
     />
   </head>
