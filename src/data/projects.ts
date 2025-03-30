@@ -35,8 +35,8 @@ const projects = [
     description: 'A parodic game based on the Animal crossing universe by Nitendo. The player plays Cib\', a comedian that is having a hard time finding a job. One day, he wakes up in the Nitenders boss\' office. He is asked to make him laugh to have a role in their last game. But the boss has a... special sense of humor.',
     image: "/images/ciboulot.webp",
     category: 'dev',
-    link: 'https://nuit-du-musba-2025.netlify.app/experiences/1-hub/index.html',
-    secondaryLink: 'https://github.com/nuit-musee-musba/experience-2025',
+    link: 'https://safirl.itch.io/cib-au-boulot',
+    secondaryLink: 'https://github.com/MatthieuMarchand/Ciboulot',
     secondaryLinkName: "Github"
   },
   {
