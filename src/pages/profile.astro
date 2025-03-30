@@ -26,6 +26,10 @@ import Layout from "../layouts/Layout.astro";
 <style lang="scss">
     @use "../styles/_variables";
 
+    body {
+        overflow: auto;
+    }
+
     .container {
         display: flex;
         justify-content: center;
@@ -71,12 +75,35 @@ import Layout from "../layouts/Layout.astro";
         justify-content: center;
         align-items: center;
         margin-top: variables.$spacing-xl;
+        padding-bottom: variables.$spacing-m;
         opacity: 50%;
 
         a {
             font-size: variables.$font-size-s;
             font-family: variables.$font-normal;
             font-weight: 200;
+        }
+    }
+
+    //For touchscreen in portrait mode
+    @media (orientation: portrait) {
+        .container {
+            flex-direction: column-reverse;
+            gap: variables.$spacing-m;
+        }
+
+        .leftColumn {
+            gap: variables.$spacing-xl;
+        }
+
+        .contactInformations {
+            li {
+                font-size: variables.$mobile-font-size-s;
+            }
+        }
+
+        .footer a {
+            font-size: variables.$mobile-font-size-s;
         }
     }
 </style>
