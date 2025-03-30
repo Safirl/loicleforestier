@@ -9,15 +9,16 @@ import Layout from "../layouts/Layout.astro";
             <div id="contact" class="contact">
                 <h2>Contact</h2>
                 <ul class="contactInformations">
-                    <li>Mail : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
-                    <li>Instagram : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
-                    <li>linkedin : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
-                    <li>mail : <a href=""></a>loicleforestier.pro@gmail.com</a></li>
+                    <li>Mail: <button id="copyEmailButton">loicleforestier.pro@gmail.com</button></li>
+                    <li>Instagram: <a href="https://www.instagram.com/loicl_photographie/" target="_blank" rel="noopener noreferrer">@loicl_photographie</a></li>
+                    <li>linkedin: <a href="https://www.linkedin.com/in/lo%C3%AFc-l-259a00215/" target="_blank" rel="noopener noreferrer">loïc Leforestier</a></li>
+                    <li>Github: <a href="https://github.com/Safirl" target="_blank" rel="noopener noreferrer">Safirl</a></li>
+                    <li>Itch.io: <a href="https://safirl.itch.io/" target="_blank" rel="noopener noreferrer">Safirl</a></li>
                 </ul>
             </div>
         </div>
         <div class="rightColumn">
-            <p class="profileDescription">Lorem ipsum dolor sit amet consectetur. Diam et malesuada nulla in donec. Dui scelerisque erat sed sollicitudin amet neque a. Nulla at morbi purus eget eu vitae auctor molestie pharetra. Eget bibendum elementum odio feugiat facilisis diam imperdiet. Cursus in at hac tristique justo quam egestas risus. Eget tortor netus amet etiam bibendum eu aliquam. Nibh faucibus turpis sed arcu.</p>
+            <p class="profileDescription">I'm Loïc Leforestier, a french technical designer and artist. I like to create art in different forms and make websites focused on the user experience. More than just a tool, a good design can simplify our lives when used for deep causes and connect us together.</p>
         </div>
     </div>
     <div class="footer"><span>Loïc Leforestier -&nbsp;</span><a href="/mentions">Mention légales</a></div>
@@ -68,6 +69,12 @@ import Layout from "../layouts/Layout.astro";
             font-family: variables.$font-normal;
             font-weight: 200;
         }
+
+        a, button {
+            font-size: variables.$font-size-s;
+            font-family: variables.$font-normal;
+            font-weight: 200;
+        }
     }
 
     .footer {
@@ -100,6 +107,9 @@ import Layout from "../layouts/Layout.astro";
             li {
                 font-size: variables.$mobile-font-size-s;
             }
+            a, button {
+                font-size: variables.$mobile-font-size-s;
+            }
         }
 
         .footer a {
@@ -107,3 +117,19 @@ import Layout from "../layouts/Layout.astro";
         }
     }
 </style>
+
+<script>
+    function copyToClipBoard() {
+        const copyText = "loicleforestier.pro@gmail.com";
+        navigator.clipboard.writeText(copyText)
+            .then(() => alert("Email copied to your clipboard!"))
+            .catch(err => console.error("Failed to copy:", err));
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const button = document.querySelector("#copyEmailButton");
+        if (button) {
+            button.addEventListener("click", copyToClipBoard);
+        }
+    });
+</script>
