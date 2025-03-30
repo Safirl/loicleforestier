@@ -1,0 +1,47 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="">
+    <div class="container">
+        <div>
+            <h2>PROPRIÉTAIRE DU SITE</h2>
+            <span>Nom de l'éditeur : Loïc Leforestier</span>
+            <span>Email : loicleforestier.pro@gmail.com</span>
+            <span>Directeur de la publication : Loïc Leforestier</span>
+        </div>
+
+        <div>
+            <h2>HÉBÉRGEUR</h2>
+            <span>Le site est hébergé par : Netlify, Inc.</span>
+            <span>Adresse : 2325 3rd Street, Suite 215, San Francisco, California 94107</span>
+            <span> Site web : <a href="https://www.netlify.com">https://www.netlify.com</a></span>
+        </div>
+
+        <div>
+            <h2>PROPRIÉTÉ INTELLECTUELLE</h2>
+            <span>L'ensemble du contenu du site (textes, images, vidéos, logos, etc.) est protégé par le droit de la propriété intellectuelle. Toute reproduction ou diffusion sans autorisation est interdite.</span>
+        </div>
+    </div>
+</Layout>
+
+<style lang="scss">
+    @use "../styles/_variables";
+
+    .container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        gap: variables.$spacing-m;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: variables.$spacing-xs;
+        }
+
+        a {
+            font-family: variables.$font-normal;
+        }
+    }
+</style>
