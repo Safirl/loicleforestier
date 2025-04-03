@@ -228,7 +228,6 @@ import externalLinkArrow from "../assets/arrow.svg";
   }
 
   .dynamicImage {
-    opacity: 0;
     transition: opacity 0.25s ease-in-out;
   }
 
@@ -399,16 +398,17 @@ import externalLinkArrow from "../assets/arrow.svg";
     if (!currentProject) {
       return;
     }
-    // referenceImg.src = currentProject.image;
-    const projectImages = document.querySelectorAll(
-      ".dynamicImage"
-    ) as NodeListOf<HTMLImageElement>;
-    projectImages.forEach((img) => {
-      img.style.opacity = "0";
-      setTimeout(() => {
-        (img as HTMLImageElement).src = (currentProject as project).image;
-      }, 250);
-    });
+    if (currentProject.image != new URL(referenceImg.src).pathname) {
+      const projectImages = document.querySelectorAll(
+        ".dynamicImage"
+      ) as NodeListOf<HTMLImageElement>;
+      projectImages.forEach((img) => {
+        img.style.opacity = "0";
+        setTimeout(() => {
+          (img as HTMLImageElement).src = (currentProject as project).image;
+        }, 250);
+      });
+    }
     const foregroundImage = document.querySelector(
       "#imageLink"
     ) as HTMLLinkElement;
@@ -476,7 +476,6 @@ import externalLinkArrow from "../assets/arrow.svg";
   if (referenceImg) {
     //Change background color with image dominent color and set its opacity to 100%
     referenceImg.addEventListener("load", () => {
-      console.log("coucou");
       //Update dynamic images opacity when image is loaded
       const projectImages = document.querySelectorAll(
         ".dynamicImage"
