@@ -227,6 +227,11 @@ import externalLinkArrow from "../assets/arrow.svg";
     }
   }
 
+  .dynamicImage {
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+  }
+
   //Mouse trail
   #mouseFollower {
     position: absolute;
@@ -369,8 +374,10 @@ import externalLinkArrow from "../assets/arrow.svg";
     secondaryLinkName: string | undefined;
   }
 
-  const img = new Image();
-  img.src = projects[0].image;
+  const referenceImg = document.querySelector(
+    ".dynamicImage"
+  ) as HTMLImageElement;
+  //   referenceImg.src = projects[0].image;
   let isDevFilterActive = false;
   let isMovieFilterActive = false;
   let currentProject: project | undefined;
@@ -385,16 +392,6 @@ import externalLinkArrow from "../assets/arrow.svg";
   addFilterEvents();
   setCurrentProject(projectItems[0]);
 
-  // function addUpdateProjectImageEvent() {
-  //     projectItems.forEach((item) => {
-  //         item.addEventListener("pointerenter", () => {
-  //             //We don't want to change current project on hover if the pointer is coarse
-  //             if (touchScreenMediaQuery.matches) return;
-  //             setCurrentProject(item);
-  //         })
-  //     })
-  // }
-
   function setCurrentProject(newItem: HTMLLIElement) {
     currentProject = projects.find(
       (project) => project.id.toString() === newItem.dataset.key
@@ -402,12 +399,15 @@ import externalLinkArrow from "../assets/arrow.svg";
     if (!currentProject) {
       return;
     }
-    img.src = currentProject.image;
+    // referenceImg.src = currentProject.image;
     const projectImages = document.querySelectorAll(
       ".dynamicImage"
     ) as NodeListOf<HTMLImageElement>;
     projectImages.forEach((img) => {
-      (img as HTMLImageElement).src = (currentProject as project).image;
+      img.style.opacity = "0";
+      setTimeout(() => {
+        (img as HTMLImageElement).src = (currentProject as project).image;
+      }, 250);
     });
     const foregroundImage = document.querySelector(
       "#imageLink"
@@ -473,17 +473,27 @@ import externalLinkArrow from "../assets/arrow.svg";
     });
   }
 
-  //Change background color with image dominent color
-  img.addEventListener("load", () => {
-    const colorThief = new ColorThief();
-    const dominantColor = colorThief.getColor(img);
-    const darkenFactor = 0.1;
-    const rgbColor = `rgb(${dominantColor[0] * darkenFactor}, ${dominantColor[1] * darkenFactor}, ${dominantColor[2] * darkenFactor})`;
-    document.body.style.backgroundColor = rgbColor;
-  });
+  if (referenceImg) {
+    //Change background color with image dominent color and set its opacity to 100%
+    referenceImg.addEventListener("load", () => {
+      console.log("coucou");
+      //Update dynamic images opacity when image is loaded
+      const projectImages = document.querySelectorAll(
+        ".dynamicImage"
+      ) as NodeListOf<HTMLImageElement>;
+      projectImages.forEach((img) => {
+        img.style.opacity = "1";
+      });
+      const colorThief = new ColorThief();
+      const dominantColor = colorThief.getColor(referenceImg);
+      const darkenFactor = 0.1;
+      const rgbColor = `rgb(${dominantColor[0] * darkenFactor}, ${dominantColor[1] * darkenFactor}, ${dominantColor[2] * darkenFactor})`;
+      document.body.style.backgroundColor = rgbColor;
+    });
 
-  //MouseFollower
-  followMouse(img);
+    //MouseFollower
+    followMouse(referenceImg);
+  }
 
   //Get the top project element
   const projectList = document.querySelector(
@@ -521,9 +531,6 @@ import externalLinkArrow from "../assets/arrow.svg";
   let scrollTimeout: number;
 
   function handlePointerChange() {
-    //Refresh UpdateProject on hover
-    // addUpdateProjectImageEvent();
-
     if (touchScreenMediaQuery.matches /*&& sizeMediaQuery.matches*/) {
       projectList?.addEventListener("scroll", changeCurrentProjectOnScroll);
       projectList?.addEventListener("touchmove", changeCurrentProjectOnScroll, {
