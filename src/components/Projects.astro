@@ -1,524 +1,577 @@
 ---
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 import projects from "../data/projects";
-import externalLinkArrow from "../assets/arrow.svg"
+import externalLinkArrow from "../assets/arrow.svg";
 ---
+
 <div class="container">
-    <div class="projects">
-        <div class="projectFilter">
-            <button id="filterDev">Dev</button>
-            <button id="filterFilms">Films</button>
-        </div>
-        <ul class="projectList">
-            {
-                projects.map((project) => (
-                    <li
-                        class="projectItem"
-                        data-category={project.category}
-                        data-key={project.id}
-                    >
-                        <a class="primaryLink" target={project.id == 0 ? "" : "_blank"} rel={project.id == 0 ? "" : "noopener noreferrer"} href={project.link} data-has-secondary-link={project.secondaryLink == "" ? "false" : "true"}>
-                            {project.title}
-                            {<Image class="externalArrow" src={externalLinkArrow} alt="external link icon" />}
-                        </a>
-                        {project.secondaryLink != "" && (
-                            <a
-                                class="secondaryLink"
-                                href={project.secondaryLink}
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                            >
-                                {project.secondaryLinkName}
-                                {<Image class="externalArrow" src={externalLinkArrow} alt="external link icon" />}
-                            </a>
-                        )}
-                    </li>
-                ))
-            }
-        </ul>
+  <div class="projects">
+    <div class="projectFilter">
+      <button id="filterDev">Dev</button>
+      <button id="filterFilms">Films</button>
     </div>
-    <div class="projectImage">
-        <a id="imageLink" href={projects[0].link}><img id="image" class="foregroundImage dynamicImage" src={projects[0].image} alt="" /></a>
-        <img class="backgroundImage dynamicImage" src={projects[0].image} alt="" />
-        <p class="projectDescription">
-            {projects[0].description}
-        </p>
-    </div>
+    <ul class="projectList">
+      {
+        projects.map((project) => (
+          <li
+            class="projectItem"
+            data-category={project.category}
+            data-key={project.id}
+          >
+            <a
+              class="primaryLink"
+              target={project.id == 0 ? "" : "_blank"}
+              rel={project.id == 0 ? "" : "noopener noreferrer"}
+              href={project.link}
+              data-has-secondary-link={
+                project.secondaryLink == "" ? "false" : "true"
+              }
+            >
+              {project.title}
+              {
+                <Image
+                  class="externalArrow"
+                  src={externalLinkArrow}
+                  alt="external link icon"
+                />
+              }
+            </a>
+            {project.secondaryLink != "" && (
+              <a
+                class="secondaryLink"
+                href={project.secondaryLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {project.secondaryLinkName}
+                {
+                  <Image
+                    class="externalArrow"
+                    src={externalLinkArrow}
+                    alt="external link icon"
+                  />
+                }
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <div class="projectImage">
+    <a id="imageLink" href={projects[0].link}
+      ><img
+        id="image"
+        class="foregroundImage dynamicImage"
+        src={projects[0].image}
+        alt="image of the project"
+        fetchpriority="high"
+      /></a
+    >
+    <img
+      class="backgroundImage dynamicImage"
+      src={projects[0].image}
+      alt="background blurry image of the project"
+    />
+    <p class="projectDescription">
+      {projects[0].description}
+    </p>
+  </div>
 </div>
 <!-- Mouse follower -->
 <div id="mouseFollower"></div>
 <div id="trail"></div>
 
 <style lang="scss">
-    @use "../styles/_variables";
+  @use "../styles/_variables";
 
+  .container {
+    display: flex;
+    justify-content: center;
+    gap: 10vw;
+    width: 100%;
+  }
+
+  .projects {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-m;
+    width: 330px;
+  }
+
+  .projectFilter {
+    display: flex;
+    gap: variables.$spacing-xs;
+
+    button {
+      transition: ease-in-out opacity 0.2s;
+
+      &.hidden {
+        opacity: 50%;
+      }
+    }
+  }
+
+  .externalArrow {
+    padding-left: variables.$spacing-xs;
+    opacity: 0%;
+    transition: ease-in-out opacity 0.2s;
+
+    &.currentItem {
+      opacity: 100%;
+    }
+  }
+
+  .projectList {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-m;
+    max-height: calc(100vh - variables.$spacing-m * 2 - 10vh - 35px);
+    overflow-y: auto;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    width: 230px;
+    box-sizing: border-box;
+    padding-bottom: 42vh;
+  }
+
+  .projectItem {
+    display: flex;
+    flex-direction: column;
+    transition: ease-in-out opacity 0.2s;
+    position: relative;
+
+    &.hidden {
+      opacity: 50%;
+      pointer-events: none;
+      cursor: none;
+    }
+
+    &.currentItem {
+      .primaryLink[data-has-secondary-link="true"] {
+        margin-bottom: 0.5rem;
+      }
+
+      .secondaryLink {
+        margin-top: 0;
+        opacity: 100%;
+        visibility: initial;
+      }
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+
+      &.secondaryLink {
+        &:hover {
+          .externalArrow {
+            opacity: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .primaryLink {
+    font-size: variables.$font-size-l;
+    width: fit-content;
+    transition: margin-bottom ease-in-out 0.5s;
+    margin-bottom: 0px;
+
+    .externalArrow {
+      width: 30px;
+    }
+  }
+
+  .secondaryLink {
+    font-size: variables.$font-size-s;
+    opacity: 0%;
+    width: fit-content;
+    margin-top: -34px;
+    visibility: hidden;
+    transition:
+      opacity 0.5s ease-in-out 0.3s,
+      margin-top 0.5s ease-in-out,
+      visibility 0s linear 0.3s;
+
+    .externalArrow {
+      width: 15px;
+    }
+  }
+
+  .projectImage {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-s;
+    position: relative;
+    width: 60vh;
+    max-width: 600px;
+
+    .backgroundImage {
+      position: absolute;
+      z-index: -1;
+      top: 50%;
+      left: 50%;
+      width: 150%;
+      object-fit: cover;
+      transform: translate(-50%, -50%);
+      filter: blur(120px);
+    }
+
+    .foregroundImage {
+      object-fit: cover;
+      max-width: 600px;
+      width: 60vh;
+      aspect-ratio: 1 / 1;
+    }
+  }
+
+  //Mouse trail
+  #mouseFollower {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    // transition: all .05s ease-out;
+    z-index: -1;
+    filter: blur(50px);
+    opacity: 50%;
+  }
+
+  #trail {
+    position: absolute;
+  }
+
+  @media (pointer: coarse) {
+    .externalArrow {
+      opacity: 0;
+
+      &.currentItem {
+        opacity: 100%;
+      }
+    }
+  }
+
+  //For touchscreen in landscape
+  @media (pointer: coarse) and (orientation: landscape) {
+    .projectList {
+      scroll-snap-type: y mandatory;
+    }
+    .projectItem {
+      scroll-snap-align: start;
+    }
+  }
+
+  //For touchscreen in portrait mode
+  @media (orientation: portrait) {
     .container {
-        display: flex;
-        justify-content: center;
-        gap: 10vw;
-        width: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: variables.$spacing-m;
+      align-items: center;
+      height: 100%;
+      box-sizing: border-box;
+      justify-content: space-between;
     }
 
     .projects {
-        display: flex;
-        flex-direction: column;
-        gap: variables.$spacing-m;
-        width: 330px;
-    }
-
-    .projectFilter {
-        display: flex;
-        gap: variables.$spacing-xs;
-
-        button {
-            transition: ease-in-out opacity .2s;
-
-            &.hidden {
-                opacity: 50%;
-            }
-        }
-    }
-
-    .externalArrow {
-        padding-left: variables.$spacing-xs;
-        opacity: 0%;
-        transition: ease-in-out opacity .2s;
-
-        &.currentItem {
-            opacity: 100%;
-        }
+      display: flex;
+      flex-direction: row;
+      gap: 0;
+      width: 100%;
+      overflow: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      height: 75px;
+      box-sizing: border-box;
+      scroll-snap-type: x mandatory;
+      touch-action: pan-x;
     }
 
     .projectList {
-        display: flex;
-        flex-direction: column;
-        gap: variables.$spacing-m;
-        max-height: calc(100vh - variables.$spacing-m*2 - 10vh - 35px);
-        overflow-y: auto;
-        scrollbar-width: none;
-        scroll-behavior: smooth;
-        width: 230px;
-        box-sizing: border-box;
-        padding-bottom: 42vh;
+      flex-direction: row;
+      gap: variables.$spacing-l;
+      padding-bottom: 0;
+      max-height: 100%;
+      overflow: initial;
+      width: fit-content;
+      padding-left: 50vw;
+      text-wrap: nowrap;
+      touch-action: pan-x;
     }
 
     .projectItem {
-        display: flex;
-        flex-direction: column;
-        transition: ease-in-out opacity .2s;
-        position: relative;
+      scroll-snap-align: end center;
+      width: fit-content;
 
-        &.hidden {
-            opacity: 50%;
-            pointer-events: none;
-            cursor: none;
-        }
+      .secondaryLink {
+        display: none;
+      }
 
-        &.currentItem {
-            .primaryLink[data-has-secondary-link="true"] {
-                margin-bottom: .5rem
-            }
-
-            .secondaryLink {
-                margin-top: 0;
-                opacity: 100%;
-                visibility:initial;
-            }
-        }
-
-        a {
-            display: flex;
-            align-items: center;
-
-            &:hover {
-                .externalArrow {
-                    opacity: 100%;
-                }
-            }
-        }
-    }
-
-    .primaryLink {
-        font-size: variables.$font-size-l;
-        width: fit-content;
-        transition: margin-bottom ease-in-out .5s;
-        margin-bottom: 0px;
-
-        .externalArrow {
-            width: 30px;
-        }
-    }
-
-    .secondaryLink {
-        font-size: variables.$font-size-s;
-        opacity: 0%;
-        width: fit-content;
-        margin-top: -34px;
-        visibility: hidden;
-        transition: opacity 0.5s ease-in-out 0.3s, margin-top 0.5s ease-in-out, visibility 0s linear 0.3s ;
-
-        .externalArrow {
-            width: 15px;
-        }
+      .externalArrow {
+        display: initial;
+        position: absolute;
+        padding-left: 0;
+        top: 0;
+        right: -36px;
+        width: 18px;
+      }
     }
 
     .projectImage {
-        display: flex;
-        flex-direction: column;
-        gap: variables.$spacing-s;
-        position: relative;
-        width: 60vh;
-        max-width: 600px;
+      gap: variables.$spacing-xs;
+      position: relative;
+      max-width: 100%;
+      height: fit-content;
 
-        .backgroundImage {
-            position: absolute;
-            z-index: -1;
-            top: 50%;
-            left: 50%;
-            width: 150%;
-            object-fit: cover;
-            transform: translate(-50%, -50%);
-            filter: blur(120px);
-        }
+      .backgroundImage {
+        width: 100%;
+        height: 80svh;
+        object-fit: fill;
+      }
 
-        .foregroundImage  {
-            object-fit: cover;
-            max-width: 600px;
-            width: 60vh;
-            aspect-ratio: 1 / 1 ;
-        }
+      .foregroundImage {
+        max-width: 100%;
+        aspect-ratio: 1 / 1;
+      }
+    }
+
+    .projectFilter {
+      display: none;
     }
 
     //Mouse trail
     #mouseFollower {
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        pointer-events: none;
-        transform: translate(-50%, -50%);
-        // transition: all .05s ease-out;
-        z-index: -1;
-        filter: blur(50px);
-        opacity: 50%;
+      display: none;
     }
 
     #trail {
-        position: absolute;
+      display: none;
     }
-
-    @media (pointer: coarse) {
-        a {
-            &:hover {
-                .externalArrow {
-                    opacity: 0;
-                }
-            }
-        }
-
-        // .externalArrow {
-        //     opacity: 0;
-
-        //     &.currentItem {
-        //         opacity: 100%;
-        //     }
-        // }
-    }
-
-    //For touchscreen in landscape
-    @media (pointer: coarse) and (orientation: landscape) {
-        .projectList {
-            scroll-snap-type: y mandatory;
-        }
-        .projectItem {
-            scroll-snap-align: start;
-        }
-    }
-
-    //For touchscreen in portrait mode
-    @media (orientation: portrait) {
-        .container {
-            display: flex;
-            flex-direction: column-reverse;
-            gap: variables.$spacing-m;
-            align-items: center;
-            height: 100%;
-            box-sizing: border-box;
-            justify-content: space-between;
-        }
-
-        .projects {
-            display: flex;
-            flex-direction: row;
-            gap:0;
-            width: 100%;
-            overflow: auto;
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-            height: 75px;
-            box-sizing: border-box;
-            scroll-snap-type: x mandatory;
-            touch-action: pan-x;
-        }
-
-        .projectList {
-            flex-direction: row;
-            gap: variables.$spacing-l;
-            padding-bottom: 0;
-            max-height: 100%;
-            overflow: initial;
-            width: fit-content;
-            padding-left: 50vw;
-            text-wrap: nowrap;
-            touch-action: pan-x;
-        }
-
-        .projectItem {
-            scroll-snap-align: end  center;
-            width: fit-content;
-            
-            .secondaryLink {
-                display: none;
-            }
-
-            .externalArrow {
-                display: initial;
-                position: absolute;
-                padding-left: 0;
-                top: 0;
-                right: -36px;
-                width: 18px;
-            }
-        }
-
-
-        .projectImage {
-            gap: variables.$spacing-xs;
-            position: relative;
-            max-width: 100%;
-            height: fit-content;
-
-            .backgroundImage {
-                width: 100%;
-                height: 80svh;
-                object-fit: fill;
-            }
-
-            .foregroundImage {
-                max-width: 100%;
-                aspect-ratio: 1 / 1;
-            }
-        }
-
-        .projectFilter {
-            display: none;
-        }
-
-         //Mouse trail
-        #mouseFollower {
-            display: none;
-        }
-
-        #trail {
-            display: none;
-        }
-    }
+  }
 </style>
 
 <script>
-    import projects from "../data/projects";
-    import ColorThief from 'colorthief';
-    import {followMouse} from '../js/mouseBlurEffect'
+  import projects from "../data/projects";
+  import ColorThief from "colorthief";
+  import { followMouse } from "../js/mouseBlurEffect";
 
-    interface project {
-        id: number;
-        title: string;
-        description: string;
-        image: string;
-        category: string;
-        link: string;
-        secondaryLink: string|undefined;
-        secondaryLinkName: string|undefined;
+  interface project {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    category: string;
+    link: string;
+    secondaryLink: string | undefined;
+    secondaryLinkName: string | undefined;
+  }
+
+  const img = new Image();
+  img.src = projects[0].image;
+  let isDevFilterActive = false;
+  let isMovieFilterActive = false;
+  let currentProject: project | undefined;
+
+  const filterDev = document.getElementById("filterDev");
+  const filterMovie = document.getElementById("filterFilms");
+  const projectItems = document.querySelectorAll(
+    ".projectItem"
+  ) as NodeListOf<HTMLLIElement>;
+
+  // addUpdateProjectImageEvent()
+  addFilterEvents();
+  setCurrentProject(projectItems[0]);
+
+  // function addUpdateProjectImageEvent() {
+  //     projectItems.forEach((item) => {
+  //         item.addEventListener("pointerenter", () => {
+  //             //We don't want to change current project on hover if the pointer is coarse
+  //             if (touchScreenMediaQuery.matches) return;
+  //             setCurrentProject(item);
+  //         })
+  //     })
+  // }
+
+  function setCurrentProject(newItem: HTMLLIElement) {
+    currentProject = projects.find(
+      (project) => project.id.toString() === newItem.dataset.key
+    );
+    if (!currentProject) {
+      return;
     }
-    
-    const img = new Image();
-    img.src = projects[0].image;
-    let isDevFilterActive = false;
-    let isMovieFilterActive = false;
-    let currentProject: project|undefined;
+    img.src = currentProject.image;
+    const projectImages = document.querySelectorAll(
+      ".dynamicImage"
+    ) as NodeListOf<HTMLImageElement>;
+    projectImages.forEach((img) => {
+      (img as HTMLImageElement).src = (currentProject as project).image;
+    });
+    const foregroundImage = document.querySelector(
+      "#imageLink"
+    ) as HTMLLinkElement;
+    foregroundImage.href = (currentProject as project).link;
 
-    const filterDev = document.getElementById("filterDev");
-    const filterMovie = document.getElementById("filterFilms");
-    const projectItems = document.querySelectorAll(".projectItem") as NodeListOf<HTMLLIElement>;
-    
-    addUpdateProjectImageEvent()
-    addFilterEvents()
-    setCurrentProject(projectItems[0])
-    
-    function addUpdateProjectImageEvent() {
-        projectItems.forEach((item) => {
-            item.addEventListener("pointerenter", () => {
-                //We don't want to change current project on hover if the pointer is coarse
-                if (touchScreenMediaQuery.matches) return;
-                setCurrentProject(item);
-            })
-        })
+    const projectDescription = document.querySelector(
+      ".projectDescription"
+    ) as HTMLParagraphElement;
+    projectDescription.innerHTML = currentProject.description;
+
+    projectItems.forEach((item) => {
+      item.classList.remove("currentItem");
+      item.querySelector(".externalArrow")?.classList.remove("currentItem");
+    });
+    newItem.classList.add("currentItem");
+    newItem.querySelector(".externalArrow")?.classList.add("currentItem");
+  }
+
+  function addFilterEvents() {
+    if (!filterDev || !filterMovie) {
+      return;
     }
-
-    function setCurrentProject(newItem: HTMLLIElement) {
-        currentProject = projects.find((project) => project.id.toString() === newItem.dataset.key)
-        if (!currentProject) {
-            return;   
-        }
-        img.src = currentProject.image;
-        const projectImages = document.querySelectorAll(".dynamicImage") as NodeListOf<HTMLImageElement>;
-        projectImages.forEach((img) => {
-            (img as HTMLImageElement).src = (currentProject as project).image;
-        })
-        const foregroundImage = document.querySelector("#imageLink") as HTMLLinkElement;
-        foregroundImage.href = (currentProject as project).link;
-
-        const projectDescription = document.querySelector(".projectDescription") as HTMLParagraphElement;
-        projectDescription.innerHTML = currentProject.description;
-
-        projectItems.forEach(item => {
-            item.classList.remove("currentItem");
-            item.querySelector(".externalArrow")?.classList.remove("currentItem")
-        });
-        newItem.classList.add("currentItem");
-        newItem.querySelector(".externalArrow")?.classList.add("currentItem");
-    }
-
-    function addFilterEvents() {
-        if (!filterDev || !filterMovie) {
-            return;
-        }
-        //Filter for web projects
-        filterDev.addEventListener("click", () => {
-            isDevFilterActive = !isDevFilterActive
-            if (isDevFilterActive) {
-                isMovieFilterActive = !isDevFilterActive
-            }
-            updateActiveItems()
-        });
-
-        //Filter for movie projects
-        filterMovie.addEventListener("click", () => {
-            isMovieFilterActive = !isMovieFilterActive
-            if (isMovieFilterActive) {
-                isDevFilterActive = !isMovieFilterActive
-            }
-            updateActiveItems()
-        });
-    }
-
-    //Update filter css
-    function updateActiveItems() {
-        projectItems.forEach((item) => {
-            if (item.dataset.category === "dev") {
-                if (isMovieFilterActive) {
-                    filterDev?.classList.add("hidden")
-                    item.classList.add("hidden")
-                } else {
-                    filterDev?.classList.remove("hidden")
-                    item.classList.remove("hidden")
-                } 
-            } else if (item.dataset.category === "movie") {
-                if (isDevFilterActive) {
-                    filterMovie?.classList.add("hidden")
-                    item.classList.add("hidden")
-                } else {
-                    filterMovie?.classList.remove("hidden")
-                    item.classList.remove("hidden")
-                }
-            }
-        });
-    }
-
-    //Change background color with image dominent color
-    img.addEventListener('load', () => {
-        const colorThief = new ColorThief();
-        const dominantColor = colorThief.getColor(img);
-        const darkenFactor = .1
-        const rgbColor = `rgb(${dominantColor[0]*darkenFactor}, ${dominantColor[1]*darkenFactor}, ${dominantColor[2]*darkenFactor})`
-        document.body.style.backgroundColor = rgbColor;
+    //Filter for web projects
+    filterDev.addEventListener("click", () => {
+      isDevFilterActive = !isDevFilterActive;
+      if (isDevFilterActive) {
+        isMovieFilterActive = !isDevFilterActive;
+      }
+      updateActiveItems();
     });
 
-    //MouseFollower
-    followMouse(img);
+    //Filter for movie projects
+    filterMovie.addEventListener("click", () => {
+      isMovieFilterActive = !isMovieFilterActive;
+      if (isMovieFilterActive) {
+        isDevFilterActive = !isMovieFilterActive;
+      }
+      updateActiveItems();
+    });
+  }
 
-    
-    //Get the top project element
-    const projectList = document.querySelector(".projectList") as HTMLUListElement;
-    function getClosestItemElement(isVertical: boolean) {
-        let closestItem;
-        let minTopDiff = Infinity;
-        
-        projectItems.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            
-            let diff;
-            if (isVertical) {
-                const listRect = projectList.getBoundingClientRect();
-                diff = rect.top - listRect.top;
-            }
-            else {
-                const centerScreen = window.innerWidth / 2;
-                const centerItem = rect.left + rect.width / 2;
-                diff = Math.abs(centerItem - centerScreen);
-            }
-                        
-            if (diff >= 0 && diff < minTopDiff) {
-                minTopDiff = diff;
-                closestItem = item;
-            }
+  //Update filter css
+  function updateActiveItems() {
+    projectItems.forEach((item) => {
+      if (item.dataset.category === "dev") {
+        if (isMovieFilterActive) {
+          filterDev?.classList.add("hidden");
+          item.classList.add("hidden");
+        } else {
+          filterDev?.classList.remove("hidden");
+          item.classList.remove("hidden");
+        }
+      } else if (item.dataset.category === "movie") {
+        if (isDevFilterActive) {
+          filterMovie?.classList.add("hidden");
+          item.classList.add("hidden");
+        } else {
+          filterMovie?.classList.remove("hidden");
+          item.classList.remove("hidden");
+        }
+      }
+    });
+  }
+
+  //Change background color with image dominent color
+  img.addEventListener("load", () => {
+    const colorThief = new ColorThief();
+    const dominantColor = colorThief.getColor(img);
+    const darkenFactor = 0.1;
+    const rgbColor = `rgb(${dominantColor[0] * darkenFactor}, ${dominantColor[1] * darkenFactor}, ${dominantColor[2] * darkenFactor})`;
+    document.body.style.backgroundColor = rgbColor;
+  });
+
+  //MouseFollower
+  followMouse(img);
+
+  //Get the top project element
+  const projectList = document.querySelector(
+    ".projectList"
+  ) as HTMLUListElement;
+  function getClosestItemElement(isVertical: boolean) {
+    let closestItem;
+    let minTopDiff = Infinity;
+
+    projectItems.forEach((item) => {
+      const rect = item.getBoundingClientRect();
+
+      let diff;
+      if (isVertical) {
+        const listRect = projectList.getBoundingClientRect();
+        diff = rect.top - listRect.top;
+      } else {
+        const centerScreen = window.innerWidth / 2;
+        const centerItem = rect.left + rect.width / 2;
+        diff = Math.abs(centerItem - centerScreen);
+      }
+
+      if (diff >= 0 && diff < minTopDiff) {
+        minTopDiff = diff;
+        closestItem = item;
+      }
+    });
+
+    return closestItem;
+  }
+
+  //Only on touchscreen medias in landscape mode
+  const touchScreenMediaQuery = window.matchMedia("(pointer: coarse)");
+  const sizeMediaQuery = window.matchMedia("(orientation: landscape)");
+  let scrollTimeout: number;
+
+  function handlePointerChange() {
+    //Refresh UpdateProject on hover
+    // addUpdateProjectImageEvent();
+
+    if (touchScreenMediaQuery.matches /*&& sizeMediaQuery.matches*/) {
+      projectList?.addEventListener("scroll", changeCurrentProjectOnScroll);
+      projectList?.addEventListener("touchmove", changeCurrentProjectOnScroll, {
+        passive: true,
+      });
+      projectItems.forEach((item) => {
+        item.removeEventListener("pointerenter", () => {
+          setCurrentProject(item);
         });
-
-        console.log(closestItem)
-        return closestItem;
+      });
+    } else {
+      projectList?.removeEventListener("scroll", changeCurrentProjectOnScroll);
+      projectList?.removeEventListener(
+        "touchmove",
+        changeCurrentProjectOnScroll
+      );
+      projectItems.forEach((item) => {
+        item.addEventListener("pointerenter", () => {
+          setCurrentProject(item);
+        });
+      });
     }
+  }
 
-    //Only on touchscreen medias in landscape mode
-    const touchScreenMediaQuery = window.matchMedia("(pointer: coarse)");
-    const sizeMediaQuery = window.matchMedia("(orientation: landscape)");
-    let scrollTimeout: number;
+  function changeCurrentProjectOnScroll() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = window.setTimeout(() => {
+      let topElement = getClosestItemElement(
+        sizeMediaQuery.matches ? true : false
+      );
+      if (!topElement) {
+        return;
+      }
+      setCurrentProject(topElement as HTMLLIElement);
+    }, 200);
+  }
 
-    function handlePointerChange() {
-        //Refresh UpdateProject on hover
-        addUpdateProjectImageEvent();
+  touchScreenMediaQuery.addEventListener("change", handlePointerChange);
+  sizeMediaQuery.addEventListener("change", handlePointerChange);
 
-        if (touchScreenMediaQuery.matches /*&& sizeMediaQuery.matches*/) {
-            projectList?.addEventListener("scroll", changeCurrentProjectOnScroll);
-            projectList?.addEventListener("touchmove", changeCurrentProjectOnScroll, { passive: true });
-        }
-        else {
-            projectList?.removeEventListener("scroll", changeCurrentProjectOnScroll);
-            projectList?.removeEventListener("touchmove", changeCurrentProjectOnScroll);
-        }
-    }
+  //Set default behavior
+  handlePointerChange();
 
-    function changeCurrentProjectOnScroll() {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = window.setTimeout(() => {
-            let topElement = getClosestItemElement(sizeMediaQuery.matches ? true : false) ;
-            if (!topElement) {
-                return;
-            }
-            setCurrentProject(topElement as HTMLLIElement);
-        }, 200)
-    }
-
-    touchScreenMediaQuery.addEventListener("change", handlePointerChange);
-    sizeMediaQuery.addEventListener("change", handlePointerChange);
-
-    //Set default behavior
-    handlePointerChange();
-    
-    // const projectsContainer = document.querySelector('.projectList');
-    // if (projectsContainer) {
-    //     //Scroll on the whole page
-    //     document.addEventListener("wheel", (event) => {
-    //         projectsContainer.scrollTop += event.deltaY;
-    //     });
-    // }
-
+  // const projectsContainer = document.querySelector('.projectList');
+  // if (projectsContainer) {
+  //     //Scroll on the whole page
+  //     document.addEventListener("wheel", (event) => {
+  //         projectsContainer.scrollTop += event.deltaY;
+  //     });
+  // }
 </script>
