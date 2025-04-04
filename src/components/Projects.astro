@@ -115,7 +115,7 @@ import externalLinkArrow from "../assets/arrow.svg";
   .externalArrow {
     padding-left: variables.$spacing-xs;
     opacity: 0%;
-    transition: ease-in-out opacity 0.2s;
+    transition: ease-in-out opacity 0.1s;
 
     &.currentItem {
       opacity: 100%;
@@ -138,7 +138,7 @@ import externalLinkArrow from "../assets/arrow.svg";
   .projectItem {
     display: flex;
     flex-direction: column;
-    transition: ease-in-out opacity 0.2s;
+    transition: ease-in-out opacity 0.1s;
     position: relative;
 
     &.hidden {
@@ -228,7 +228,7 @@ import externalLinkArrow from "../assets/arrow.svg";
   }
 
   .dynamicImage {
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
   }
 
   //Mouse trail
@@ -238,7 +238,6 @@ import externalLinkArrow from "../assets/arrow.svg";
     height: 100px;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    // transition: all .05s ease-out;
     z-index: -1;
     filter: blur(50px);
     opacity: 50%;
@@ -404,7 +403,7 @@ import externalLinkArrow from "../assets/arrow.svg";
         img.style.opacity = "0";
         setTimeout(() => {
           (img as HTMLImageElement).src = (currentProject as project).image;
-        }, 100);
+        }, 50);
       });
     }
     const foregroundImage = document.querySelector(
