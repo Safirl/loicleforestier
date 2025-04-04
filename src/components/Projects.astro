@@ -228,7 +228,7 @@ import externalLinkArrow from "../assets/arrow.svg";
   }
 
   .dynamicImage {
-    transition: opacity 0.25s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
 
   //Mouse trail
@@ -291,7 +291,6 @@ import externalLinkArrow from "../assets/arrow.svg";
       height: 75px;
       box-sizing: border-box;
       scroll-snap-type: x mandatory;
-      touch-action: pan-x;
     }
 
     .projectList {
@@ -303,7 +302,6 @@ import externalLinkArrow from "../assets/arrow.svg";
       width: fit-content;
       padding-left: 50vw;
       text-wrap: nowrap;
-      touch-action: pan-x;
     }
 
     .projectItem {
@@ -406,7 +404,7 @@ import externalLinkArrow from "../assets/arrow.svg";
         img.style.opacity = "0";
         setTimeout(() => {
           (img as HTMLImageElement).src = (currentProject as project).image;
-        }, 250);
+        }, 100);
       });
     }
     const foregroundImage = document.querySelector(
@@ -530,16 +528,24 @@ import externalLinkArrow from "../assets/arrow.svg";
   let scrollTimeout: number;
 
   function handlePointerChange() {
-    if (touchScreenMediaQuery.matches /*&& sizeMediaQuery.matches*/) {
-      projectList?.addEventListener("scroll", changeCurrentProjectOnScroll);
-      projectList?.addEventListener("touchmove", changeCurrentProjectOnScroll, {
-        passive: true,
-      });
-      projectItems.forEach((item) => {
-        item.removeEventListener("pointerenter", () => {
-          setCurrentProject(item);
+    if (touchScreenMediaQuery.matches) {
+      if (sizeMediaQuery.matches) {
+        projectList?.addEventListener("scroll", changeCurrentProjectOnScroll);
+        projectItems.forEach((item) => {
+          item.removeEventListener("pointerenter", () => {
+            setCurrentProject(item);
+          });
         });
-      });
+      } else {
+        const projectContainer = document.querySelector(".projects");
+        projectContainer?.addEventListener(
+          "scroll",
+          changeCurrentProjectOnScroll,
+          {
+            passive: true,
+          }
+        );
+      }
     } else {
       projectList?.removeEventListener("scroll", changeCurrentProjectOnScroll);
       projectList?.removeEventListener(
@@ -564,7 +570,7 @@ import externalLinkArrow from "../assets/arrow.svg";
         return;
       }
       setCurrentProject(topElement as HTMLLIElement);
-    }, 200);
+    }, 150);
   }
 
   touchScreenMediaQuery.addEventListener("change", handlePointerChange);
@@ -572,12 +578,4 @@ import externalLinkArrow from "../assets/arrow.svg";
 
   //Set default behavior
   handlePointerChange();
-
-  // const projectsContainer = document.querySelector('.projectList');
-  // if (projectsContainer) {
-  //     //Scroll on the whole page
-  //     document.addEventListener("wheel", (event) => {
-  //         projectsContainer.scrollTop += event.deltaY;
-  //     });
-  // }
 </script>
