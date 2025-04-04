@@ -373,7 +373,6 @@ import externalLinkArrow from "../assets/arrow.svg";
   const referenceImg = document.querySelector(
     ".dynamicImage"
   ) as HTMLImageElement;
-  //   referenceImg.src = projects[0].image;
   let isDevFilterActive = false;
   let isMovieFilterActive = false;
   let currentProject: project | undefined;
@@ -383,29 +382,30 @@ import externalLinkArrow from "../assets/arrow.svg";
   const projectItems = document.querySelectorAll(
     ".projectItem"
   ) as NodeListOf<HTMLLIElement>;
-
-  // addUpdateProjectImageEvent()
-  addFilterEvents();
-  setCurrentProject(projectItems[0]);
+  const projectList = document.querySelector(
+    ".projectList"
+  ) as HTMLUListElement;
 
   function setCurrentProject(newItem: HTMLLIElement) {
+    const oldProject = currentProject;
     currentProject = projects.find(
       (project) => project.id.toString() === newItem.dataset.key
     );
-    if (!currentProject) {
+    if (!currentProject || currentProject == oldProject) {
       return;
     }
-    if (currentProject.image != new URL(referenceImg.src).pathname) {
-      const projectImages = document.querySelectorAll(
-        ".dynamicImage"
-      ) as NodeListOf<HTMLImageElement>;
-      projectImages.forEach((img) => {
-        img.style.opacity = "0";
-        setTimeout(() => {
-          (img as HTMLImageElement).src = (currentProject as project).image;
-        }, 50);
-      });
-    }
+
+    const projectImages = document.querySelectorAll(
+      ".dynamicImage"
+    ) as NodeListOf<HTMLImageElement>;
+    projectImages.forEach((img) => {
+      img.style.opacity = "0";
+      //Wait for css transition
+      setTimeout(() => {
+        (img as HTMLImageElement).src = (currentProject as project).image;
+      }, 100);
+    });
+
     const foregroundImage = document.querySelector(
       "#imageLink"
     ) as HTMLLinkElement;
@@ -480,6 +480,7 @@ import externalLinkArrow from "../assets/arrow.svg";
       projectImages.forEach((img) => {
         img.style.opacity = "1";
       });
+
       const colorThief = new ColorThief();
       const dominantColor = colorThief.getColor(referenceImg);
       const darkenFactor = 0.1;
@@ -492,9 +493,6 @@ import externalLinkArrow from "../assets/arrow.svg";
   }
 
   //Get the top project element
-  const projectList = document.querySelector(
-    ".projectList"
-  ) as HTMLUListElement;
   function getClosestItemElement(isVertical: boolean) {
     let closestItem;
     let minTopDiff = Infinity;
@@ -522,13 +520,13 @@ import externalLinkArrow from "../assets/arrow.svg";
   }
 
   //Only on touchscreen medias in landscape mode
-  const touchScreenMediaQuery = window.matchMedia("(pointer: coarse)");
-  const sizeMediaQuery = window.matchMedia("(orientation: landscape)");
+  const isTouchScreenMediaQuery = window.matchMedia("(pointer: coarse)");
+  const isLandscapeMediaQuery = window.matchMedia("(orientation: landscape)");
   let scrollTimeout: number;
 
   function handlePointerChange() {
-    if (touchScreenMediaQuery.matches) {
-      if (sizeMediaQuery.matches) {
+    if (isTouchScreenMediaQuery.matches) {
+      if (isLandscapeMediaQuery.matches) {
         projectList?.addEventListener("scroll", changeCurrentProjectOnScroll);
         projectItems.forEach((item) => {
           item.removeEventListener("pointerenter", () => {
@@ -563,18 +561,20 @@ import externalLinkArrow from "../assets/arrow.svg";
     clearTimeout(scrollTimeout);
     scrollTimeout = window.setTimeout(() => {
       let topElement = getClosestItemElement(
-        sizeMediaQuery.matches ? true : false
+        isLandscapeMediaQuery.matches ? true : false
       );
       if (!topElement) {
         return;
       }
       setCurrentProject(topElement as HTMLLIElement);
-    }, 150);
+    }, 25);
   }
 
-  touchScreenMediaQuery.addEventListener("change", handlePointerChange);
-  sizeMediaQuery.addEventListener("change", handlePointerChange);
+  isTouchScreenMediaQuery.addEventListener("change", handlePointerChange);
+  isLandscapeMediaQuery.addEventListener("change", handlePointerChange);
 
   //Set default behavior
+  addFilterEvents();
+  setCurrentProject(projectItems[0]);
   handlePointerChange();
 </script>
