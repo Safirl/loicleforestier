@@ -577,4 +577,13 @@ import externalLinkArrow from "../assets/arrow.svg";
   addFilterEvents();
   setCurrentProject(projectItems[0]);
   handlePointerChange();
+
+  function preloadImages() {
+    projects.forEach((project) => {
+      const img = new Image();
+      img.src = project.image;
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", preloadImages);
 </script>
