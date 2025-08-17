@@ -40,6 +40,16 @@ const projects = [
     secondaryLinkName: "Github"
   },
   {
+    id: 12,
+    title: 'C\'est boucé !',
+    description: 'A short comic game about a serial shoelacer made during the 2025 GMTK Game Jam in 3 days. Try your best to tie a maximum of shoelaces before being caught by the police. Made using pygame.',
+    image: "/images/boucle.webp",
+    category: 'dev',
+    link: 'https://safirl.itch.io/boucle',
+    secondaryLink: 'https://github.com/Safirl/gmtk2025',
+    secondaryLinkName: "Github"
+  },
+  {
     id: 3,
     title: 'Smash',
     category: 'dev',
