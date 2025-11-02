@@ -28,8 +28,8 @@ const projects = [
       "Interactive experience made for the MUSBA of Bordeaux, displayed on a 4K screen at the museum. A collaborative work to make visitors discover the reserve of the MUSBA and the unique paintings it has to show.",
     image: "/images/reserve.webp",
     category: "dev",
-    link: "https://tv-watcher-gobz.netlify.app/",
-    secondaryLink: "https://github.com/Safirl/back-to-basics-rendu",
+    link: "https://nuit-du-musba-2025.netlify.app/experiences/1-hub/index.html",
+    secondaryLink: "https://github.com/nuit-musee-musba/experience-2025",
     secondaryLinkName: "Github",
   },
   {
@@ -39,8 +39,8 @@ const projects = [
       "A small experience made for a Gobelins' course that questions population control through medias.",
     image: "/images/tv-watcher.webp",
     category: "dev",
-    link: "https://safirl.itch.io/cib-au-boulot",
-    secondaryLink: "https://github.com/MatthieuMarchand/Ciboulot",
+    link: "https://tv-watcher-gobz.netlify.app/",
+    secondaryLink: "https://github.com/Safirl/back-to-basics-rendu",
     secondaryLinkName: "Github",
   },
   {
@@ -53,16 +53,6 @@ const projects = [
     link: "https://safirl.itch.io/cib-au-boulot",
     secondaryLink: "https://github.com/MatthieuMarchand/Ciboulot",
     secondaryLinkName: "Github",
-  },
-  {
-    id: 12,
-    title: 'C\'est boucé !',
-    description: 'A short comic game about a serial shoelacer made during the 2025 GMTK Game Jam in 3 days. Try your best to tie a maximum of shoelaces before being caught by the police. Made using pygame.',
-    image: "/images/boucle.webp",
-    category: 'dev',
-    link: 'https://safirl.itch.io/boucle',
-    secondaryLink: 'https://github.com/Safirl/gmtk2025',
-    secondaryLinkName: "Github"
   },
   {
     id: 3,
