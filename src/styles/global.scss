@@ -1,97 +1,98 @@
 @use "variables";
 
 @font-face {
-    font-family: "Junicode Italic";
-    src: url("/fonts/JunicodeVF-Italic.woff2") format("woff2");
-    font-weight: 300;
-    font-style: italic;
-    font-display: swap;
+  font-family: "Junicode Italic";
+  src: url("/fonts/JunicodeVF-Italic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: block;
 }
 
 @font-face {
-    font-family: "Junicode Light";
-    src: url("/fonts/JunicodeVF-Roman.woff2") format("woff2");
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Junicode Light";
+  src: url("/fonts/JunicodeVF-Roman.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
 }
 
 html {
-    display: flex;
-    justify-content: center;
-    scroll-behavior: smooth;
+  display: flex;
+  justify-content: center;
+  scroll-behavior: smooth;
 }
 
 body {
-    color: variables.$color-text;
-    padding: variables.$spacing-m;
-    background-color: variables.$color-background;
-    max-width: 1440px;
-    height: 100svh;
-    overflow: hidden;
-    box-sizing: border-box;
-    transition: ease-in-out background-color .3s;
+  color: variables.$color-text;
+  padding: variables.$spacing-m;
+  background-color: variables.$color-background;
+  max-width: 1440px;
+  height: 100svh;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: ease-in-out background-color 0.3s;
 }
 
 a {
-    font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
-    font-size: variables.$font-size-s;
-    user-select: none;
+  font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
+  font-size: variables.$font-size-s;
+  user-select: none;
 
-    &:hover {
-        font-family: variables.$font-special-italic, Arial, Helvetica, sans-serif;
-        text-decoration: underline 1px;
-    }
+  &:hover {
+    font-family: variables.$font-special-italic, Arial, Helvetica, sans-serif;
+    text-decoration: underline 1px;
+  }
 }
 
 p,
 span {
-    font-size: variables.$font-size-s;
-    font-family: variables.$font-normal, Arial, Helvetica, sans-serif;
-    font-weight: 200;
+  font-size: variables.$font-size-s;
+  font-family: variables.$font-normal, Arial, Helvetica, sans-serif;
+  font-weight: 200;
 }
 
 button {
-    font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
-    font-size: variables.$font-size-s;
-    background: none;
-    color: variables.$color-text;
-    cursor: pointer;
-    user-select: none;
+  font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
+  font-size: variables.$font-size-s;
+  background: none;
+  color: variables.$color-text;
+  cursor: pointer;
+  user-select: none;
 }
 
-h1, h2 {
-    font-size: variables.$font-size-l;
-    font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
+h1,
+h2 {
+  font-size: variables.$font-size-l;
+  font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
 }
 
 //Only for portrait touchscreens
 @media (orientation: portrait) {
-    body {
-        padding: variables.$spacing-s;
-        max-width: 768px;
-        overflow: auto;
-        height: 100svh;
-    }
+  body {
+    padding: variables.$spacing-s;
+    max-width: 768px;
+    overflow: auto;
+    height: 100svh;
+  }
 
-    a {
-        font-size: variables.$mobile-font-size-s;
-        &:hover {
-            font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
-            text-decoration: none;
-        }
+  a {
+    font-size: variables.$mobile-font-size-s;
+    &:hover {
+      font-family: variables.$font-special-light, Arial, Helvetica, sans-serif;
+      text-decoration: none;
     }
+  }
 
-    p,
-    span {
-        font-size: variables.$mobile-font-size-s;
-    }
+  p,
+  span {
+    font-size: variables.$mobile-font-size-s;
+  }
 
-    button {
-        font-size: variables.$mobile-font-size-s;
-    }
+  button {
+    font-size: variables.$mobile-font-size-s;
+  }
 
-    h2 {
-        font-size: variables.$mobile-font-size-m;
-    }
+  h2 {
+    font-size: variables.$mobile-font-size-m;
+  }
 }
